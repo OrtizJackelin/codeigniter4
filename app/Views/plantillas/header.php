@@ -19,19 +19,20 @@
   
     <title><?php echo esc($tituloPagina)?></title>
 </head>
-<body>
+<body  >
     <header>
-    <nav style=" padding: 2px; margin-left:0px!important; background:white; " 
-        class=" navbar navbar-expand-lg navbar-dark sticky-top border-bottom background ">
+    <nav style=" padding: 2px; margin:0px!important; background:white; " 
+        class=" navbar navbar-expand-lg navbar-dark sticky-top border-bottom background "><!--le saque el overflow:hidden; en style-->
 
         <div class="container-fluid">
-            <div class= "container md-12">
+            <div class= "container">
                 <a class="navbar-brand" href="../../noticia">
-                <img src="../../imagenes/imagenesIndex/VamosGrande.png" alt="logo" width="400" height="auto"
+                <img src="../../imagenes/imagenesIndex/VamosGrande.png" alt="logo" 
+                        style=" max-height:70px; margin-top:20px; " width="auto"
                     class="d-inline-block align-text-top">
                 </a>
                 <p style = " font-weight: bold; font-size:12px; color:#7e7e7e;padding:0px; margin:0!important;">
-                        <?php if($session->has('nombre')) echo "Hola " . $session->nombre . " ". $session->apellido;?>
+                        <?php if($session->has('nombre')) echo "<em> Hola " . $session->nombre . " ". $session->apellido . "</em>";?>
                 </p>
             </div>
 
@@ -90,4 +91,6 @@
         </div>
     </nav>
     </header>
+ 
+
     

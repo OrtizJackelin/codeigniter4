@@ -1,0 +1,120 @@
+<?= session()->getFlashdata('error') ?>
+<?php $errors = validation_errors();?>
+
+<section class = "sectionPrincipal">
+            
+    <div class="container">
+
+        <div class=" col-md-12 text-center" style=" margin-top: 20px;">
+            <h2> <?php echo esc($tituloCuerpo)?></h2>
+        </div><br><br>
+
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia" enctype="multipart/form-data" >
+            <?= csrf_field() ?>
+
+            <div class="col-md-12">
+                <label for="titulo"><b><h5>Título:</h5></b></label>
+                <input type="text" name="titulo" 
+                        value="<?= set_value('titulo') ?>" 
+                        class="form-control" required>
+            </div>
+
+            <div class="col-md-4">
+                <label for="categoria"><b><h5>Categoría:</h5></b></label>
+                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "categoria" required>
+                <option value="" <?= set_select('categoria', '') ?>>
+                    Seleccione
+                </option>
+
+                    <?php                     
+                    if(isset($categorias) && is_array($categorias))
+                    {             
+                        foreach($categorias as $categoria){
+                            ?>
+                            <option value="<?= esc($categoria['id']);?>"<?= set_select('categoria')?>>
+                                            <?= esc($categoria['nombre']);?>
+                            </option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+            </div>
+
+            <div class="col-md-12">
+                <label for="descripcion"><b><h5>Descripción:</h5></b></label>
+                <textarea name="descripcion" cols="45" rows="10" class="form-control">
+                <?= set_value('descripcion') ?>             
+                </textarea required>
+            </div>
+
+            <label for="inputGroupFile02"><b><h5>Ingresar Imagen:</h5></b></label>
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" name = "imagen" id="inputGroupFile02" accept = "image/avif,image/png,image/jpeg"> <!--acept para colocar el tipo de archivo permitido-->
+                <label class="input-group-text" for="inputGroupFile02"><b>Upload</b></label>
+            </div>
+
+            <div class="col-md-4">
+                <label for="estado"><b><h5>Guardar como:</h5></b></label>
+                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "estado" required>
+                    <option value="" <?= set_select('estado', '') ?>>
+                        Seleccione
+                    </option>
+
+                    <?php                     
+                    if(isset($estados) && is_array($estados))
+                    {             
+                        foreach($estados as $estado){
+                            ?>
+                            <option value="<?= esc($estado['id']);?>"<?= set_select('estado') ?>><?= esc($estado['nombre']);?>
+                            </option>
+                            <?php
+                        }
+                    }
+                    ?>
+                </select>
+
+            </div><br><br><br>
+            
+            <div class="col-md-10">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" name = "es_activo" type="checkbox" 
+                        id="flexSwitchCheckDefault">            
+                    <label class="form-check-label" for="flexSwitchCheckDefault">Activar/Desactivar Publicación</label>
+                </div>
+            </div>
+
+            <div class="row justify-content-center " style = "margin-top: 60px;">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                        onclick="window.location.href='<?php echo base_url('noticia'); ?>'">
+                            CANCELAR
+                    </button>
+                </div>
+            </div>
+
+        </form><br>
+
+        <div id="liveAlertPlaceholder"></div>      
+
+        <?php
+             if($errors){
+                ?>
+            <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
+            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
+                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
+                <div>
+                    <H6><b><?= validation_list_errors() ?></H6></b>
+                  
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div> 
+            <?php
+            }
+        ?>
+    </div>
+</section> 
+

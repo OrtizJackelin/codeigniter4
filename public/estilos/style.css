@@ -7,7 +7,8 @@ body {
     display: flex;
     flex-direction: column;
     height: 100%;
-  
+    width: 100%;
+    
 }
 .background2{
  /*
@@ -35,33 +36,8 @@ body {
         background: #fffffff1;
     }
 }
-.card{
-    border: none!important;
-}
 
-.publicacionesRecomendados {
-    border-radius: 0px !important;
-    border: none !important;
-    background: transparent !important;
-    display: flex;
-    align-items: center;
-    .liTab {
-        margin: 7px!important;
-        background: rgb(84, 190, 3);
-        background: radial-gradient(at left top, rgba(84, 190, 3, 0.774), rgba(1, 81, 28, 0.758)) !important;
-        cursor: pointer !important;
-        border-radius: 6px !important;
-        border: none!important;
-        transition: all .3s ease;
-    }
-    
-    .ui-state-active{
-        box-shadow:  1px 1px 5px rgba(84, 190, 3, 0.774),
-        -1px -1px 5px rgba(1, 81, 28, 0.395)!important;
-        background: radial-gradient(at left top, rgb(84, 190, 3), rgb(1, 81, 27)) !important;
-       
-    }
-}
+
 
 .btn{
     background: radial-gradient(at left top, rgb(84, 190, 3), rgb(1, 81, 27)) !important;
@@ -161,16 +137,17 @@ button a:hover {
 
 /* FOOTER */
 footer {
-    background-color: gray;
     padding: 6px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    background: #FCFCFC80;
+    background: radial-gradient(at left top, #ffffff14, #8e7f9826);
 }
 
 footer p {
     padding: 2%;
-    color: antiquewhite;
+    color:#212529;
 }
 
 footer a {
@@ -236,52 +213,5 @@ footer a {
     align-self: center;
 }
 
-/* EVENTOS */
 
 
-.card-img-top {
-    padding: 5%;
-    height: 200px;
-}
-
-.buttom {
-    color: white;
-    background: linear-gradient(rgb(84, 190, 3), rgb(5, 121, 5), rgb(1, 81, 27));
-
-}
-
-#carousel {
-    width: 90%;
-    margin-bottom: 20px
-}
-
-#imagenCarousel {
-    height: 600px;
-
-}
-
-
-/* Estilizar las casillas de verificación */
-.star-label {
-    display: inline-block;
-    font-size: 35px;
-    /* Tamaño de las estrellas */
-    cursor: pointer;
-    color: #888;
-    /* Color de las estrellas no seleccionadas */
-    margin-right: 5px;
-    /* Espacio entre estrellas */
-
-}
-
-/* Estilizar las casillas de verificación seleccionadas */
-input[class="start"] {
-    display: none;
-    /* Ocultar las casillas de verificación */
-}
-
-input[class="start"]:checked+.star-label {
-    color: #ffcc00;
-    /* Color de las estrellas seleccionadas */
-
-}

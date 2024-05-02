@@ -1,5 +1,5 @@
 <?= session()->getFlashdata('error') ?>
-<?= validation_list_errors() ?> <!--Lista de Errores-->
+<?php $errors = validation_errors();?>
 
 <section class = "sectionPrincipal">
             
@@ -20,9 +20,8 @@
             </div>
 
             <div class="col-md-4">
-                <label for="titulo"><b><h5>Categoría:</h5></b></label>
-                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" 
-                                                                                name = "categoria" required>
+                <label for="categoria"><b><h5>Categoría:</h5></b></label>
+                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "categoria" required>
                 <option value="" <?= set_select('categoria', '') ?>>
                     Seleccione
                 </option>
@@ -51,12 +50,12 @@
 
             <label for="inputGroupFile02"><b><h5>Ingresar Imagen:</h5></b></label>
             <div class="input-group mb-3">
-                <input type="file" class="form-control" id="inputGroupFile02">
+                <input type="file" class="form-control" name = "imagen" id="inputGroupFile02" accept = "image/avif,image/png,image/jpeg"> <!--acept para colocar el tipo de archivo permitido-->
                 <label class="input-group-text" for="inputGroupFile02"><b>Upload</b></label>
             </div>
 
             <div class="col-md-4">
-                <label for="titulo"><b><h5>Guardar como:</h5></b></label>
+                <label for="estado"><b><h5>Guardar como:</h5></b></label>
                 <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "estado" required>
                     <option value="" <?= set_select('estado', '') ?>>
                         Seleccione
@@ -77,7 +76,7 @@
 
             </div><br><br><br>
             
-            <div class="col-md-10">
+            <div class="col-md-12">
                 <div class="form-check form-switch">
                     <input class="form-check-input" name = "es_activo" type="checkbox" 
                         id="flexSwitchCheckDefault" 
@@ -88,10 +87,19 @@
             </div>
 
             <input type = "hidden" name = "id" value = "<?= set_value('id', $noticia['id']) ?>">
-            <input type = "hidden" name = "id" value = "<?= set_value('es_activo_original', $noticia['es_activo']) ?>">
+            <?php $es_activo_original = $noticia['es_activo']?>
+            <input type = "hidden" name = "es_activo_original" value = "<?= set_value('es_activo_original', $es_activo_original) ?>">
 
-            <div class="col-2 ">
-                    <button type="submit" class="btn btn-secondary" id="enviar" name = "enviar">GUARDAR</button>
+            <div class="row justify-content-center " style = "margin-top: 60px;">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                        onclick="window.location.href='<?php echo base_url('noticia/mis_noticias'); ?>'">
+                            CANCELAR
+                    </button>
+                </div>
             </div>
 
         </form><br>
@@ -99,18 +107,19 @@
         <div id="liveAlertPlaceholder"></div>      
 
         <?php
-            /* if(!$valido){
+             if($errors){
                 ?>
             <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
             style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../static/imagenes/redes/exclamation-triangle.svg" ?>                
+                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
                 <div>
-                    <H6><b><?php echo $mensaje ?></H6></b>
+                    <H6><b><?= validation_list_errors() ?></H6></b>
+                  
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div> 
             <?php
-            }*/
+            }
         ?>
     </div>
 </section> 

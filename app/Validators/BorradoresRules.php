@@ -11,17 +11,11 @@ class BorradoresRules
     {
         $session = session();
         $modeloNoticia = model(ModeloNoticia::class);
-        $cantidadBorradoresActivos = $modeloNoticia->obtenerCantidadNotciasActivasPorUsuario($session->id);
+        $cantidadBorradoresActivos = $modeloNoticia->obtenerCantidadNotciasActivasEnBorradorPorUsuario($session->id);
       
-        if ($cantidadBorradoresActivos >= 3 && !isset($data['es_activo_original']) && $data['es_activo']>0) {
+        if ($cantidadBorradoresActivos >= 3 && $data['es_activo_original']=="1" && $data['es_activo']>0 && $data['estado'] == "2") {
             return false;
         }
         return true;
     }
-
-    public function getMessage(string $field, array $data): string
-    {
-        return "You cannot create a new active notice as you have reached the maximum limit of 4.";
-    }
-
 }

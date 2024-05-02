@@ -15,7 +15,8 @@
         {
             // Subconsulta para obtener la última fecha de modificación para cada ID
             $subconsulta = '(SELECT MAX(fecha_modificacion) FROM borrador WHERE noticia.id = borrador.id_noticia)';    
-            $campos ="noticia.id as id, noticia.es_activo, borrador.fecha_modificacion as fecha, borrador.titulo, borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria";   
+            $campos ="noticia.id as id, noticia.es_activo, borrador.fecha_modificacion as fecha, borrador.titulo, 
+                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria";   
             
             if($id > 0){
                 $noticia =  $this->db->table($this->table)
@@ -40,14 +41,20 @@
                      
         }
 
-        public function obtenerCantidadNotciasActivasPorUsuario($idUsuario){
+        public function obtenerCantidadNotciasActivasEnBorradorPorUsuario($idUsuario){
+
+            $subconsultaEstatus = '(SELECT MAX(id) FROM estado_noticia WHERE noticia.id = estado_noticia.id_noticia)';
+
             $noticias = $this->db->table($this->table)
-                        ->select('COUNT(*) as cantidad')
-                        ->where('id_usuario', $idUsuario)
-                        ->where('es_activo' , true)
+                        ->where('noticia.id_usuario',$idUsuario)
+                        ->join($this->tablaEstadoNoticia, 'noticia.id = estado_noticia.id_noticia')
+                        ->where("estado_noticia.id = $subconsultaEstatus")
+                        ->where('estado_noticia.id_estado', 2)
+                        ->where('noticia.es_activo', true)
+                        ->select('COUNT(*) as cantidad')                        
                         ->get()->getRow();
 
-            if($noticias){
+            if($noticias){           
                 return $noticias->cantidad;
             } 
             
