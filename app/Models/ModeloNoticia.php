@@ -75,7 +75,8 @@
                         ->join('estado', 'estado.id = estado_noticia.id_estado')
                         ->join('usuario', 'usuario.id = estado_noticia.id_usuario')
                         ->join($this->tablaCategoria, 'categoria.id = borrador.id_categoria')
-                        ->select('noticia.id, usuario.correo, estado.nombre as estado, titulo, categoria.nombre as categoria, estado_noticia.fecha as fechaEstatus')
+                        ->select('noticia.id, noticia.es_activo, usuario.correo, estado.nombre as estado, titulo, 
+                                categoria.nombre as categoria, estado_noticia.fecha as fechaEstatus')
                         ->get()->getResultArray();
             return $noticias;
         }

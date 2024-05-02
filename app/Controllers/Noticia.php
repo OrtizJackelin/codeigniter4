@@ -17,8 +17,8 @@ class Noticia extends BaseController
 
     public function __construct()
     {   
-        helper('form');
-        helper('text');
+        helper(['form', 'text', 'time']);
+        //helper('text');
         $this->session = session();
         $this->modeloNoticia = model(ModeloNoticia::class);
        
@@ -33,7 +33,7 @@ class Noticia extends BaseController
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         // Establecer la configuración regional en español
-        setlocale(LC_TIME, 'es_AR.UTF8');       
+        setlocale(LC_TIME, 'es_AR');       
  
         $fechaHoraActual = Time::now(); // Obtener la fecha y hora actual
 
@@ -136,24 +136,25 @@ class Noticia extends BaseController
             $noticias = $this->modeloNoticia->obtenerNoticiasUsuario($this->session->id);
 
             //mapeamos para el contenido de la tabla
-            $cabecera = ['T&iacute;tulo', 'Catagor&iacute;a', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 'Editar noticia','Ver borradores','Ver historial'];
+            $cabecera = ['T&iacute;tulo', 'Catagor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 'Editar noticia','Ver borradores','Ver historial'];
 
 
             $contenidoNoticias = array_map(function($item) {
                 // Verificar si las variables están definidas
                 $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
                 $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
+                $estado = isset($item['es_activo']) ? esc($item['es_activo']) : 'No disponible';
                 $estatus = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
                 $fecha = isset($item['fechaEstatus']) ? esc($item['fechaEstatus']) : 'No disponible';
                 $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';
                 $editarNoticia = '<a href="/noticia/editar_noticia/' . esc($item['id'], 'url') . '"> Editar </a>';     
-                $verBorradores = '<a href="/noticia/' . esc($item['id'], 'url') . '"> Ver borradores </a>';       
-                $verHistorial = '<a href="/noticia/historial' . esc($item['id'], 'url') . '"> Ver Historial </a>';     
+                $verBorradores = '<a href="/noticia/' . esc($item['id'], 'url') . '"> Ver </a>';       
+                $verHistorial = '<a href="/noticia/historial' . esc($item['id'], 'url') . '"> Ver </a>';     
                                                 
                 // Retornar un array con los valores
             //return ["<p><h2>{$titulo}</h2></p>", "<p>{$categoria}</p>", "<p>{$estatus}</p>", "<p>{$fecha}</p>","<p>{$url}</p>"];
             //////Probar esta forma/////////
-                return [$titulo, $categoria, $estatus, $fecha, $responsable, $editarNoticia,$verBorradores,$verHistorial];
+                return [$titulo, $categoria, $estado, $estatus, $fecha, $responsable, $editarNoticia,$verBorradores,$verHistorial];
             }, $noticias);
 
             $estadoModelo = model(ModeloEstado::class);
@@ -177,6 +178,7 @@ class Noticia extends BaseController
         }
         
     }
+////////////////////////////////////////////////////////////////////////EDITAR Y POST//////////////////////////////////////////////////////////////
 
     public function editar($idNoticia){
 
@@ -304,6 +306,8 @@ class Noticia extends BaseController
         .view('plantillas/footer');
     }
 
+    ////////////////////////////////////////////////////////NUEVA Y POST/////////////////////////////////////////////////////////////////////////
+
     public function nueva(){
 
         if(!$this->session->has('id')){
@@ -323,6 +327,7 @@ class Noticia extends BaseController
             . view('plantillas/footer');
 
     }
+
 
     public function postNueva() {
 
