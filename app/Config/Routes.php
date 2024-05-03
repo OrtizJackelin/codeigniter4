@@ -12,6 +12,7 @@ $routes->get('noticia', [Noticia::class, 'index']);           // mismo que la li
 $routes->get('noticia/nueva', [Noticia::class, 'nueva']);
 $routes->post('noticia', [Noticia::class, 'postNueva']);
 $routes->get('noticia/mis_noticias', [Noticia::class, 'misNoticias']);
+$routes->get('noticia/nuevo_estado', [Noticia::class, 'cambiarEstadoYBoton']);
 $routes->post('noticia/post_editar', [Noticia::class, 'postEditar']);
 $routes->get('noticia/editar_noticia/(:segment)', [Noticia::class, 'editar']);
 

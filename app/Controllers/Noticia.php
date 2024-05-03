@@ -10,6 +10,7 @@ use  App\Validators\BorradoresRules;
 use CodeIgniter\I18n\Time;
 
 
+
 class Noticia extends BaseController
 {
     private $session;
@@ -33,7 +34,10 @@ class Noticia extends BaseController
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         
         // Establecer la configuración regional en español
-        setlocale(LC_TIME, 'es_AR');       
+        setlocale(LC_TIME, 'es_AR');   
+       
+       // $fechaHoraActual = Time::today('America/Argentina', 'en_AR');
+       // $fechaHoraActual = Time::now('America', 'en_AR');
  
         $fechaHoraActual = Time::now(); // Obtener la fecha y hora actual
 
@@ -129,32 +133,154 @@ class Noticia extends BaseController
         .view('plantillas/footer');
     }
 
+    private function esActivo($es_activo){
+
+        if(isset($es_activo)){
+            if($es_activo == 1 ){
+                return 'Activo';
+            }else{
+                return 'Inactivo';
+            } 
+        } else{
+            return 'No disponible';
+        }
+    }
+
+    private function enlaceEditar($estado, $id){
+        if(isset($estado)){
+            if($estado === 'Borrador'  || $estado === 'Corregir'){
+                return '<a href="/noticia/editar_noticia/' . esc($id, 'url') . '" 
+                            style="display: flex; justify-content: center; align-items: center;">
+                            Editar 
+                        </a>';
+
+            }else{
+                return 'n/a';
+            } 
+        } else{
+            return 'No disponible';
+        }
+    }
+
+    private function verBorradores($id){
+        return '<a href="/noticia/' . esc($id, 'url') . '" 
+                    style="display: flex; justify-content: center; align-items: center;"> 
+                    Ver 
+                </a>'; 
+    }
+
+    private function verHistorial($id){
+        return '<a href="/noticia/historial' . esc($id, 'url') . '"
+                    style="display: flex; justify-content: center; align-items: center;">
+                    Ver 
+                </a>';    
+    }
+
+    private function botonActivar($estado, $esActivo, $id){
+
+        $cantidadBorradoresActivos = $this->modeloNoticia->obtenerCantidadNotciasActivasEnBorradorPorUsuario($this->session->$id);
+       
+        if(isset($esActivo) && isset($estado)){
+
+            $url = base_url('noticia/nuevo_estado') . '?esActivo=' . $esActivo . '&id=' . $id. '&estado=' . $estado;  
+            
+            if($estado === "Borrador"){
+                if($esActivo === "0" &&  $cantidadBorradoresActivos >= 3){
+                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="inhabilitar_borrador"
+                                onclick="window.location.href=\'' . $url . '\'  disabled">
+                                Activar
+                            </button>';
+                
+                } 
+                if($esActivo === "0" &&  $cantidadBorradoresActivos < 3){
+                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="activar_borrador"
+                                onclick="window.location.href=\'' . $url . '\' ">
+                                Activar
+                            </button>';
+                
+                }else{
+                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_borrador"
+                                onclick="window.location.href=\'' . $url . '\'">
+                                Desactivar
+                            </button>';
+                }
+            }  
+            if($estado === "Validar"){
+                if($esActivo === "0"){   
+                    return '<button type="buttom" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="activar_validar"
+                                onclick="window.location.href=\'' . $url . '\'">
+                                    Activar
+                            </button>';
+                
+                } else {
+                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_validar"
+                                onclick="window.location.href=\'' . $url . '\'">
+                                Desactivar
+                            </button>';
+                            
+                }    
+
+            }
+
+
+        }else{
+            return 'No disponible';
+        }
+    }
+
+    public function cambiarEstadoYBoton(){
+     
+        $esActivo = $this->request->getVar('esActivo');
+        $id = $this->request->getVar('id');
+        $estado = $this->request->getVar('estado');
+
+        if(isset($estado) && isset($esActivo) && isset($id)){
+            if($esActivo === "1"){
+                $esActivo = 0;
+                $this->modeloNoticia->save(['id'=> $id, 'es_activo'=> $esActivo]);
+                return redirect()->to(base_url('noticia/mis_noticias'));
+            }
+
+            if($esActivo === "0"){
+                $esActivo = 1;
+                $this->modeloNoticia->save(['id'=> $id, 'es_activo'=> $esActivo]);
+                return redirect()->to(base_url('noticia/mis_noticias'));
+            }
+
+            
+        }
+       
+       
+    }
+
+
     public function misNoticias(){
 
         if($this->session->has('id')){
     
             $noticias = $this->modeloNoticia->obtenerNoticiasUsuario($this->session->id);
+            
 
             //mapeamos para el contenido de la tabla
-            $cabecera = ['T&iacute;tulo', 'Catagor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 'Editar noticia','Ver borradores','Ver historial'];
+            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 
+                        'Editar','Borradores','Historial', 'Acci&oacute;n'];
 
+            
 
             $contenidoNoticias = array_map(function($item) {
                 // Verificar si las variables están definidas
                 $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
                 $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
-                $estado = isset($item['es_activo']) ? esc($item['es_activo']) : 'No disponible';
+                $estado = $this->esActivo($item['es_activo']);                
                 $estatus = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
                 $fecha = isset($item['fechaEstatus']) ? esc($item['fechaEstatus']) : 'No disponible';
-                $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';
-                $editarNoticia = '<a href="/noticia/editar_noticia/' . esc($item['id'], 'url') . '"> Editar </a>';     
-                $verBorradores = '<a href="/noticia/' . esc($item['id'], 'url') . '"> Ver </a>';       
-                $verHistorial = '<a href="/noticia/historial' . esc($item['id'], 'url') . '"> Ver </a>';     
-                                                
-                // Retornar un array con los valores
-            //return ["<p><h2>{$titulo}</h2></p>", "<p>{$categoria}</p>", "<p>{$estatus}</p>", "<p>{$fecha}</p>","<p>{$url}</p>"];
-            //////Probar esta forma/////////
-                return [$titulo, $categoria, $estado, $estatus, $fecha, $responsable, $editarNoticia,$verBorradores,$verHistorial];
+                $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
+                $editarNoticia = $this->enlaceEditar($item['estado'], $item['id']);
+                $verBorradores = $this->verBorradores($item['id']);     
+                $verHistorial = $this->verHistorial($item['id']);
+                $accion = $this->botonActivar($item['estado'],$item['es_activo'],$item['id']);            
+                return [$titulo, $categoria, $estado, $estatus, $fecha, $responsable, $editarNoticia,
+                        $verBorradores,$verHistorial, $accion];
             }, $noticias);
 
             $estadoModelo = model(ModeloEstado::class);
@@ -241,7 +367,7 @@ class Noticia extends BaseController
                 ],
             ],
             'descripcion'  => 'required|max_length[20000]|min_length[10]',
-            'imagen'  => 'uploaded[imagen]|max_size[imagen,524]|is_image[imagen]|max_dims[imagen,800,500]|permit_empty ',
+            //'imagen'  => 'uploaded[imagen]|max_size[imagen,524]|is_image[imagen]|max_dims[imagen,800,500]|permit_empty ',
             'es_activo' => [
                     'rules' => 'maximoBorradoresActivos[maximo]',
                     'errors' => [
@@ -285,22 +411,20 @@ class Noticia extends BaseController
             'id_usuario'=> $this->session->id,
         ]);
 
-        if(!$imagen->isValid()){
+        if($imagen->isValid()){
+            
+            if(!$imagen->hasMoved()){
+                $ruta = ROOTPATH . 'public/imagenesNoticia';
+                $extension = pathinfo($imagen->getName(), PATHINFO_EXTENSION);            
+                $imagen->move($ruta,$idBorrador.'.'.$extension);
+                $nombreArchivo = $idBorrador.'.'.$extension;
+
+                $modeloBorrador->save(['id'=> $idBorrador, 'imagen'=> $nombreArchivo]);
+            }
+        } else{
             echo $imagen->getErrorString();
-            //exit;
-        } elseif(!$imagen->hasMoved()){
-
-            $ruta = ROOTPATH . 'public/imagenesNoticia';
-            $extension = pathinfo($imagen->getName(), PATHINFO_EXTENSION);            
-            $imagen->move($ruta,$idBorrador.'.'.$extension);
-            $nombreArchivo = $idBorrador.'.'.$extension;
-
-            $modeloBorrador->save(['id'=> $idBorrador, 'imagen'=> $nombreArchivo]);
-        }
-
-     
+        }    
    
-      
         return view('plantillas/header',['tituloPagina'=>'Noticia Editada'])
         .view('plantillas/mensajes', ['mensaje'=>'Noticia editada con éxito'])
         .view('plantillas/footer');

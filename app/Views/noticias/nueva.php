@@ -50,7 +50,7 @@
 
             <label for="inputGroupFile02"><b><h5>Ingresar Imagen:</h5></b></label>
             <div class="input-group mb-3">
-                <input type="file" class="form-control" name = "imagen" id="inputGroupFile02" accept = "image/avif,image/png,image/jpeg"> <!--acept para colocar el tipo de archivo permitido-->
+                <input type="file" class="form-control" name = "imagen" id="inputGroupFile02" accept = "image/avif,image/png,image/jpeg,image/webp"> <!--acept para colocar el tipo de archivo permitido-->
                 <label class="input-group-text" for="inputGroupFile02"><b>Upload</b></label>
             </div>
 
@@ -89,7 +89,7 @@
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
                 </div>
                 <div class="col-3">
-                    <button type="submit" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                    <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
                         onclick="window.location.href='<?php echo base_url('noticia'); ?>'">
                             CANCELAR
                     </button>

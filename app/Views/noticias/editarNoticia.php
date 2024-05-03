@@ -95,7 +95,7 @@
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
                 </div>
                 <div class="col-3">
-                    <button type="submit" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                    <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
                         onclick="window.location.href='<?php echo base_url('noticia/mis_noticias'); ?>'">
                             CANCELAR
                     </button>

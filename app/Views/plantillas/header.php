@@ -63,7 +63,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end">
                     <?php
                     if ($session->has('id')) { 
-                        if($session->has('esEditor')){//editor
+                        if($session->has('esEditor') == 1){//editor
                         ?>
                             <li><a class="dropdown-item" href="../../noticia/mis_noticias">Mis noticias</a></li>
                             <li><a class="dropdown-item" href="../../noticia/nueva">Crear nueva noticia</a></li>
@@ -71,7 +71,7 @@
                     
                         <?php
                         } 
-                        if($session->has('esValidador')) {//validador
+                        if($session->has('esValidador') == 1) {//validador
                         ?>
                             <li><a class="dropdown-item" href="">Mis Actividades</a></li>
                             <li><a class="dropdown-item" href="">Publicar</a></li>

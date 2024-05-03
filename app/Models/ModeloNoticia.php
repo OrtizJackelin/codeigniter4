@@ -80,5 +80,17 @@
                         ->get()->getResultArray();
             return $noticias;
         }
+
+     /*   public function obtenerBorradoresNoticiaUsuario($idUsuario){
+
+            $subconsultaBorrador = '(SELECT * FROM borrador WHERE noticia.id = borrador.id_noticia)';
+
+            $noticias = $this->db->table($this->table)
+                        ->where('id_noticia', $id_noticia);
+                        ->where('estado', 2);
+                        ->order_by('fecha', 'DESC');
+                        ->get('borradores');
+                        return $noticias;
+        }*/
     }
 

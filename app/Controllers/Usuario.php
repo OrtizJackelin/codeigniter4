@@ -6,10 +6,13 @@ use CodeIgniter\Exceptions\PageNotFoundException;
 class Usuario extends BaseController
 {
     private $session;
+
     public function __construct()
     {
         $this->session = session();
+        helper('form');
     }
+
     /*public function verificarCorreo()
     {
         $request = $this->request->getJSON();
@@ -22,8 +25,7 @@ class Usuario extends BaseController
     }*/
     public function nueva(){
 
-        helper('form');
-
+    
         $data = [
             'tituloPagina' => 'Crear Usuario',
             'tituloCuerpo' => 'Crear Usuario'
@@ -43,8 +45,7 @@ class Usuario extends BaseController
         return true;
     }*/
     public function crear(){
-        helper('form');
-
+   
         
         $data = $this->request->getPost(['nombre', 'apellido', 'correo', 'clave', 'repetirClave', 'es_editor', 'es_validor']);
 
@@ -71,16 +72,12 @@ class Usuario extends BaseController
             ],
            
         ])) {
+
             return $this->nueva();
         }
 
 
         $data['clave'] = password_hash($data['clave'], PASSWORD_DEFAULT);
-
-            //Para imprimir en consola////
-            echo "<script>";
-            echo "console.log('Lista:', " . json_encode($data['clave']) . ");";
-            echo "</script>";
 
         $es_editor = false;
         $es_validador = false;
