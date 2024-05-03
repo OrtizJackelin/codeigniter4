@@ -597,3 +597,40 @@ in SYSTEMPATH\I18n\TimeTrait.php on line 90.
 INFO - 2024-05-03 15:52:29 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 INFO - 2024-05-03 15:52:30 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
 INFO - 2024-05-03 15:52:31 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-05-03 16:47:13 --> ErrorException: Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\codeigniter4\system\HotReloader\HotReloader.php:67)
+in SYSTEMPATH\HTTP\ResponseTrait.php on line 774.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Cannot modify header information - headers already sent by (output started at C:\\xampp\\htdocs\\codeigniter4\\system\\HotReloader\\HotReloader.php:67)', 'C:\\xampp\\htdocs\\codeigniter4\\system\\HTTP\\ResponseTrait.php', 774)
+ 2 SYSTEMPATH\HTTP\ResponseTrait.php(774): setcookie('csrf_cookie_name', '0147b8ce103d35871e7fe1e623bdb127', [...])
+ 3 SYSTEMPATH\HTTP\ResponseTrait.php(750): CodeIgniter\HTTP\Response->doSetCookie('csrf_cookie_name', '0147b8ce103d35871e7fe1e623bdb127', [...])
+ 4 SYSTEMPATH\HTTP\ResponseTrait.php(730): CodeIgniter\HTTP\Response->dispatchCookies()
+ 5 SYSTEMPATH\HTTP\ResponseTrait.php(447): CodeIgniter\HTTP\Response->sendCookies()
+ 6 SYSTEMPATH\CodeIgniter.php(1113): CodeIgniter\HTTP\Response->send()
+ 7 SYSTEMPATH\CodeIgniter.php(381): CodeIgniter\CodeIgniter->sendResponse()
+ 8 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+INFO - 2024-05-03 16:47:13 --> Session: Class initialized using 'CodeIgniter\Session\Handlers\FileHandler' driver.
+CRITICAL - 2024-05-03 16:47:13 --> ErrorException: Uncaught ErrorException: Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\codeigniter4\system\HotReloader\HotReloader.php:67) in C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php:774
+Stack trace:
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Cannot modify h...', 'C:\\xampp\\htdocs...', 774)
+#1 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(774): setcookie('csrf_cookie_nam...', '0147b8ce103d358...', Array)
+#2 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(750): CodeIgniter\HTTP\Response->doSetCookie('csrf_cookie_nam...', '0147b8ce103d358...', Array)
+#3 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(730): CodeIgniter\HTTP\Response->dispatchCookies()
+#4 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(447): CodeIgniter\HTTP\Response->sendCookies()
+#5 C:\xampp\htdocs\codeigniter4\system\Debug\ExceptionHandler.php(81): CodeIgniter\HTTP\Response->send()
+#6 C:\xampp\htdocs\codeigniter4\system\Debug\Exceptions.php(156): CodeIgniter\Debug\ExceptionHandler->handle(Object(ErrorException), Object(CodeIgniter\HTTP\IncomingRequest), Object(CodeIgniter\HTTP\Response), 500, 1)
+#7 [internal function]: CodeIgniter\Debug\Exceptions->exceptionHandler(Object(ErrorException))
+#8 {main}
+  thrown
+【Previous Exception】
+ErrorException
+Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\codeigniter4\system\HotReloader\HotReloader.php:67)
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'Cannot modify h...', 'C:\\xampp\\htdocs...', 774)
+#1 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(774): setcookie('csrf_cookie_nam...', '0147b8ce103d358...', Array)
+#2 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(750): CodeIgniter\HTTP\Response->doSetCookie('csrf_cookie_nam...', '0147b8ce103d358...', Array)
+#3 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(730): CodeIgniter\HTTP\Response->dispatchCookies()
+#4 C:\xampp\htdocs\codeigniter4\system\HTTP\ResponseTrait.php(447): CodeIgniter\HTTP\Response->sendCookies()
+#5 C:\xampp\htdocs\codeigniter4\system\CodeIgniter.php(1113): CodeIgniter\HTTP\Response->send()
+#6 C:\xampp\htdocs\codeigniter4\system\CodeIgniter.php(381): CodeIgniter\CodeIgniter->sendResponse()
+#7 C:\xampp\htdocs\codeigniter4\public\index.php(79): CodeIgniter\CodeIgniter->run()
+#8 {main}
+in SYSTEMPATH\HTTP\ResponseTrait.php on line 774.
+ 1 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
