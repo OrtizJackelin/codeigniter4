@@ -11,8 +11,8 @@
 
 // Files language settings
 return [
-    'fileNotFound'      => 'File not found: "{0}"',
-    'cannotMove'        => 'Could not move file "{0}" to "{1}". Reason: {2}',
-    'expectedDirectory' => '{0} expects a valid directory.',
-    'expectedFile'      => '{0} expects a valid file.',
+    'fileNotFound'      => 'Archivo no encontrado: "{0}"',
+    'cannotMove'        => 'No se pudo mover el archivo "{0}" a "{1}". Razón: {2}',
+    'expectedDirectory' => '{0} espera un directorio válido.',
+    'expectedFile'      => '{0} espera un archivo válido.',    
 ];

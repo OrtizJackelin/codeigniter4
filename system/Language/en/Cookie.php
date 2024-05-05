@@ -11,14 +11,14 @@
 
 // Cookie language settings
 return [
-    'invalidExpiresTime'    => 'Invalid "{0}" type for "Expires" attribute. Expected: string, integer, DateTimeInterface object.',
-    'invalidExpiresValue'   => 'The cookie expiration time is not valid.',
-    'invalidCookieName'     => 'The cookie name "{0}" contains invalid characters.',
-    'emptyCookieName'       => 'The cookie name cannot be empty.',
-    'invalidSecurePrefix'   => 'Using the "__Secure-" prefix requires setting the "Secure" attribute.',
-    'invalidHostPrefix'     => 'Using the "__Host-" prefix must be set with the "Secure" flag, must not have a "Domain" attribute, and the "Path" is set to "/".',
-    'invalidSameSite'       => 'The SameSite value must be None, Lax, Strict or a blank string, {0} given.',
-    'invalidSameSiteNone'   => 'Using the "SameSite=None" attribute requires setting the "Secure" attribute.',
-    'invalidCookieInstance' => '"{0}" class expected cookies array to be instances of "{1}" but got "{2}" at index {3}.',
-    'unknownCookieInstance' => 'Cookie object with name "{0}" and prefix "{1}" was not found in the collection.',
+    'invalidExpiresTime'    => 'Tipo de "{0}" no válido para el atributo "Expira". Se esperaba: cadena, entero, objeto DateTimeInterface.',
+    'invalidExpiresValue'   => 'El tiempo de expiración de la cookie no es válido.',
+    'invalidCookieName'     => 'El nombre de la cookie "{0}" contiene caracteres no válidos.',
+    'emptyCookieName'       => 'El nombre de la cookie no puede estar vacío.',
+    'invalidSecurePrefix'   => 'El uso del prefijo "__Secure-" requiere establecer el atributo "Seguro" (Secure).',
+    'invalidHostPrefix'     => 'El uso del prefijo "__Host-" debe establecerse con la bandera "Seguro" (Secure), no debe tener un atributo "Dominio" (Domain) y la "Ruta" (Path) debe establecerse en "/".',
+    'invalidSameSite'       => 'El valor SameSite debe ser Ninguno (None), Lax, Strict o una cadena vacía, se proporcionó {0}.',
+    'invalidSameSiteNone'   => 'El uso del atributo "SameSite=None" requiere establecer el atributo "Seguro" (Secure).',
+    'invalidCookieInstance' => 'Se esperaba que la clase "{0}" recibiera una matriz de cookies como instancias de "{1}" pero se obtuvo "{2}" en el índice {3}.',
+    'unknownCookieInstance' => 'No se encontró el objeto de cookie con nombre "{0}" y prefijo "{1}" en la colección.',    
 ];

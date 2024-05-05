@@ -1,7 +1,29 @@
-<div class="container-fluid" >               
-    <div class=" col-md-12 text-center" style=" margin-top: 20px;">
-        <h4> <?php echo esc($tituloCuerpo)?></h4>
-    </div>
+<div class="container-fluid" > 
+
+    <?php if(isset($tituloCuerpo)) {?>             
+            <div class=" col-md-12 text-center" style=" margin-top: 20px;  margin-bottom: 40px">
+                <h4> <?php  echo esc($tituloCuerpo)?></h4>
+            </div>
+    <?php
+         }
+    ?>
+
+    <?php if(isset($titulo)) {?>             
+            <div class=" col-md-12 text-center" style=" margin-top: 40px;">
+                <h5> <?php  echo esc($titulo)?></h5>
+            </div>
+    <?php
+         }
+    ?>
+
+    <?php if(isset($subTitulo)) {?>             
+            <div class=" col-md-12 text-center" style=" margin-top: 10px; margin-bottom: 40px">
+                <h8> <?php  echo esc($subTitulo)?></h8>
+            </div>
+    <?php
+         }
+    ?>
+
     <div class = "table-responsive">
         <table class="table table-striped table-hover" id = "solicitudVerificacion" name = "solicitudVerificacion">
 

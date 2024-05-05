@@ -1,16 +1,20 @@
 <?php
 namespace App\Controllers;
 use App\Models\ModeloUsuario;
+use  App\Validators\MisRules;
 use CodeIgniter\Exceptions\PageNotFoundException;
 
 class Usuario extends BaseController
 {
     private $session;
+    private $modeloUsuario;
 
     public function __construct()
     {
-        $this->session = session();
         helper('form');
+        $this->modeloUsuario = model(ModeloUsuario::class);
+        $this->session = session();
+        
     }
 
     /*public function verificarCorreo()
@@ -44,11 +48,11 @@ class Usuario extends BaseController
         }
         return true;
     }*/
-    public function crear(){
-   
-        
-        $data = $this->request->getPost(['nombre', 'apellido', 'correo', 'clave', 'repetirClave', 'es_editor', 'es_validor']);
 
+
+    public function crear(){
+           
+        $data = $this->request->getPost(['nombre', 'apellido', 'correo', 'clave', 'repetirClave', 'rol[]']);
        
         if (!$this->validateData($data, [
             'nombre' => 'required|max_length[50]|min_length[2]|alpha',
@@ -58,56 +62,51 @@ class Usuario extends BaseController
                             |regex_match[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/]
                             |is_unique[usuario.correo]',
                 'errors' => [
-                    'regex_match' => 'El formato del correo electrónico es incorrecto.',
-                    'is_unique' => 'El correo electrónico ya está registrado.'//revisar aqui
+                            'regex_match' => 'El formato del correo electrónico es incorrecto.',
+                            'is_unique' => 'El correo electrónico ya está registrado.'//revisar aqui
+                        ]
+            ],
+            'rol[]' => [
+                'rules' => 'required|validarRoles[rol[]]',
+                'errors' => [
+                            'validarRoles' => 'Debe seleccionar al menos un rol',
                 ]
             ],
-            'clave'  => 'required',// revisar aqui
-            'repetirClave' => 'matches[clave]',//revisar aqui
-            //'rol' => 'required',
-
-        ], [
-            'repetir_clave' => [//revisar aqui
-                'matches' => 'Las claves no coinciden.'
-            ],
-           
+    
+        
         ])) {
-
             return $this->nueva();
         }
 
-
         $data['clave'] = password_hash($data['clave'], PASSWORD_DEFAULT);
 
-        $es_editor = false;
-        $es_validador = false;
-
-         for ($i = 0; $i < count($_POST['rol']); $i++) {
-
-            if (isset($_POST['rol'][$i]) && $_POST['rol'][$i] === "1") {
-                $es_validador = true;    
-                var_dump("entro validador");
-            } 
-            if (isset($_POST['rol'][$i]) && $_POST['rol'][$i] === "2") {
-                var_dump("entro editor");
-                $es_editor = true;
+        $es_editor = 0;
+        $es_validador = 0;
+        if(!empty($data['rol[]'])){
+            foreach($data['rol[]'] as $roles){
+                var_dump($roles);
+                if($roles === "validador"){
+                    $es_validador = 1;
+                }
+                if($roles === "editor"){
+                    $es_editor = 1;
+                }
             }
-
-        }
-
+        }       
+            
         $post = $this->validator->getValidated();
-        $modelo = model(ModeloUsuario::class);
-        $modelo->save([
-            'nombre'=> $post['nombre'], 
+        $this->modeloUsuario->insert([
+            'nombre' => $post['nombre'], 
             'apellido' => $post['apellido'],
-            'correo'  => $post['correo'],
-            'clave'  => $data['clave'],
-            'es_editor'  => $es_editor,
-            'es_validador'  => $es_validador,
+            'correo' => $post['correo'],
+            'clave' => $data['clave'],
+            'es_editor' => $es_editor,
+            'es_validador' => $es_validador,
         ]);
-        
+
+
         return view('plantillas/header',['tituloPagina'=>'Noticia Creada'])
-            .view('plantillas/exito')
+            .view('plantillas/mensaje')
             .view('plantillas/footer');
     }
 
@@ -116,8 +115,7 @@ class Usuario extends BaseController
         if($this->session->has('id')){
             return redirect()->to(base_url());
         }
-        helper('form');
-
+    
         $data = [
             'tituloPagina' => 'Inicar Sesion',
             'tituloCuerpo' => 'Inicar Sesion',
@@ -129,8 +127,7 @@ class Usuario extends BaseController
     }
 
     public function validarSesion(){
-
-        helper('form');        
+        helper('form');
         $data = $this->request->getPost(['correo', 'clave']);
        
         if (!$this->validateData($data, [
@@ -154,8 +151,7 @@ class Usuario extends BaseController
             return $this->iniciarSesion();
         }
 
-        $modeloUsuario = model(ModeloUsuario::class);
-        $usuario = $modeloUsuario
+        $usuario = $this->modeloUsuario
                     ->where('correo', $data['correo'])
                     ->first();
 

@@ -21,26 +21,23 @@
 </head>
 <body  >
     <header>
-    <nav style=" padding: 2px; margin:0px!important; background:white; " 
-        class=" navbar navbar-expand-lg navbar-dark sticky-top border-bottom background "><!--le saque el overflow:hidden; en style-->
+    <nav style="display:flex; align-items: center; justify-content:space-between; padding: 2px; margin:0px!important; background:white; " 
+        class=" sticky-top border-bottom background "><!--le saque el overflow:hidden; en style-->
 
-        <div class="container-fluid">
-            <div class= "container">
-                <a class="navbar-brand" href="../../noticia">
-                <img src="../../imagenes/imagenesIndex/VamosGrande.png" alt="logo" 
-                        style=" max-height:70px; margin-top:20px; " width="auto"
-                    class="d-inline-block align-text-top">
-                </a>
-                <p style = " font-weight: bold; font-size:12px; color:#7e7e7e;padding:0px; margin:0!important;">
-                        <?php if($session->has('nombre')) echo "<em> Hola " . $session->nombre . " ". $session->apellido . "</em>";?>
-                </p>
-            </div>
+        <div class= "container-fluid">
+            <a class="navbar-brand" href="../../noticia">
+            <img src="../../imagenes/imagenesIndex/Dnoticias2.png" alt="logo" 
+                    style=" max-height:60px; margin:5px; " width="auto"
+                class="d-inline-block align-text-top">
+            </a>
+        </div>
 
-            <div class="btn-group " style="margin-right:60px; z-index:1111;">
+        <div class= "container ml-auto" style = "text-align: right;">
+            <div class="btn-group " style="margin:4px; z-index:1111;  max-height: 36px;">
                 <?php if ($session->has('id')) {  ?>
                     <a style="text-decoration:none; padding:0px; border-radius:0px; " class="dropdown-item"
                         href="../../noticia">
-                        <button type="button" class="btn btn-success" style="height:100%;"> <img
+                        <button type="button" class="btn btn-primary" style="height:100%;"> <img
                                 src="../../imagenes/redes/person-circle.svg" alt="person-circle">
                         </button>
                     </a>
@@ -48,7 +45,7 @@
                 <?php } else { ?>
                     <a style="text-decoration:none; padding:0px; border-radius:0px; " class="dropdown-item"
                     href="../../usuario/iniciar_sesion">
-                        <button type="button" class="btn btn-success" style="height:100%;"> <img
+                        <button type="button" class="btn btn-primary" style="height:100%;"> <img
                                 src="../../imagenes/redes/person-circle.svg" alt="person-circle">
                         </button>
                     </a>
@@ -56,24 +53,23 @@
                 <?php }?>
             
 
-                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+                <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split"
                     data-bs-toggle="dropdown" aria-expanded="false" data-bs-display="static">
                     <span class="visually-hidden">Toggle Dropdown</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end">
                     <?php
                     if ($session->has('id')) { 
-                        if($session->has('esEditor') == 1){//editor
+                        if($session->has('esEditor') && $session->esEditor ==1){//editor
                         ?>
                             <li><a class="dropdown-item" href="../../noticia/mis_noticias">Mis noticias</a></li>
                             <li><a class="dropdown-item" href="../../noticia/nueva">Crear nueva noticia</a></li>
-                            <li><a class="dropdown-item" href="">Solicitudes</a></li>
                     
                         <?php
                         } 
-                        if($session->has('esValidador') == 1) {//validador
+                        if($session->has('esValidador') && $session->esValidador ==1) {//validador
                         ?>
-                            <li><a class="dropdown-item" href="">Mis Actividades</a></li>
+                            <li><a class="dropdown-item" href="../../noticia/validar">Mis Validaciones</a></li>
                             <li><a class="dropdown-item" href="">Publicar</a></li>
                             
 
@@ -87,8 +83,15 @@
                     <li><a class="dropdown-item" href="../../../usuario/nueva">Registrarse</a></li>
                     <?php }?>
                 </ul>
+
+                
             </div>
+
+            <p style = " font-weight: bold; font-size:12px; color:#7e7e7e;padding:0px; margin:0!important;">
+                        <?php if($session->has('nombre')) echo "<em> Hola " . $session->nombre . " ". $session->apellido . "</em>";?>
+            </p>
         </div>
+        
     </nav>
     </header>
  

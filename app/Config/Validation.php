@@ -7,7 +7,7 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
-use App\Validators\BorradoresRules;
+use App\Validators\MisRules;
 
 class Validation extends BaseConfig
 {
@@ -26,7 +26,7 @@ class Validation extends BaseConfig
         FormatRules::class,
         FileRules::class,
         CreditCardRules::class,
-        BorradoresRules::class,
+        MisRules::class,
     ];
 
     /**

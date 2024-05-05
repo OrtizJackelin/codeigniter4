@@ -6,7 +6,7 @@ use App\Models\ModeloEstado;
 use App\Models\ModeloCategoria;
 use App\Models\ModeloEstadoNoticia;
 use CodeIgniter\Exceptions\PageNotFoundException;
-use  App\Validators\BorradoresRules;
+use  App\Validators\MisRules;
 use CodeIgniter\I18n\Time;
 
 
@@ -170,7 +170,7 @@ class Noticia extends BaseController
     }
 
     private function verHistorial($id){
-        return '<a href="/noticia/historial' . esc($id, 'url') . '"
+        return '<a href="/noticia/historial/' . esc($id, 'url') . '"
                     style="display: flex; justify-content: center; align-items: center;">
                     Ver 
                 </a>';    
@@ -186,20 +186,20 @@ class Noticia extends BaseController
             
             if($estado === "Borrador"){
                 if($esActivo === "0" &&  $cantidadBorradoresActivos >= 3){
-                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="inhabilitar_borrador"
+                    return '<button type="buttom" style = "min-width: 82px!important;" class="btn btn-secondary btn-block mt-2 btn-sm " id="cancelar" name="inhabilitar_borrador"
                                 onclick="window.location.href=\'' . $url . '\'  disabled">
                                 Activar
                             </button>';
                 
                 } 
                 if($esActivo === "0" &&  $cantidadBorradoresActivos < 3){
-                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="activar_borrador"
+                    return '<button type="buttom" style = "min-width: 82px!important;" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="activar_borrador"
                                 onclick="window.location.href=\'' . $url . '\' ">
                                 Activar
                             </button>';
                 
                 }else{
-                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_borrador"
+                    return '<button type="buttom"  style = "min-width: 82px!important;" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_borrador"
                                 onclick="window.location.href=\'' . $url . '\'">
                                 Desactivar
                             </button>';
@@ -207,13 +207,13 @@ class Noticia extends BaseController
             }  
             if($estado === "Validar"){
                 if($esActivo === "0"){   
-                    return '<button type="buttom" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="activar_validar"
+                    return '<button type="buttom" style="min-width: 82px!important;" class="btn btn-secondary btn-block mt-2 btn-sm " id="cancelar" name="activar_validar"
                                 onclick="window.location.href=\'' . $url . '\'">
                                     Activar
                             </button>';
                 
                 } else {
-                    return '<button type="submit" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_validar"
+                    return '<button type="buttom" style = "min-width: 82px!important;" class="btn btn-secondary btn-block mt-2 btn-sm" id="cancelar" name="desactivar_validar"
                                 onclick="window.location.href=\'' . $url . '\'">
                                 Desactivar
                             </button>';
@@ -256,55 +256,56 @@ class Noticia extends BaseController
 
     public function misNoticias(){
 
-        if($this->session->has('id')){
+        if ($this->session->has('id')) {
+            if($this->session->has('esEditor') && $this->session->esEditor ==1){
     
-            $noticias = $this->modeloNoticia->obtenerNoticiasUsuario($this->session->id);
-            
+                $noticias = $this->modeloNoticia->obtenerNoticiasUsuario($this->session->id);
+                
 
-            //mapeamos para el contenido de la tabla
-            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 
-                        'Editar','Borradores','Historial', 'Acci&oacute;n'];
+                //mapeamos para el contenido de la tabla
+                $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 
+                            'Editar','Borradores','Historial', 'Acci&oacute;n'];
 
-            
+                
 
-            $contenidoNoticias = array_map(function($item) {
-                // Verificar si las variables están definidas
-                $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
-                $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
-                $estado = $this->esActivo($item['es_activo']);                
-                $estatus = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
-                $fecha = isset($item['fechaEstatus']) ? esc($item['fechaEstatus']) : 'No disponible';
-                $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
-                $editarNoticia = $this->enlaceEditar($item['estado'], $item['id']);
-                $verBorradores = $this->verBorradores($item['id']);     
-                $verHistorial = $this->verHistorial($item['id']);
-                $accion = $this->botonActivar($item['estado'],$item['es_activo'],$item['id']);            
-                return [$titulo, $categoria, $estado, $estatus, $fecha, $responsable, $editarNoticia,
-                        $verBorradores,$verHistorial, $accion];
-            }, $noticias);
+                $contenidoNoticias = array_map(function($item) {
+                    // Verificar si las variables están definidas
+                    $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
+                    $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
+                    $estado = $this->esActivo($item['es_activo']);                
+                    $estatus = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
+                    $fecha = isset($item['fechaEstatus']) ? esc($item['fechaEstatus']) : 'No disponible';
+                    $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
+                    $editarNoticia = $this->enlaceEditar($item['estado'], $item['id']);
+                    $verBorradores = $this->verBorradores($item['id']);     
+                    $verHistorial = $this->verHistorial($item['id']);
+                    $accion = $this->botonActivar($item['estado'],$item['es_activo'],$item['id']);            
+                    return [$titulo, $categoria, $estado, $estatus, $fecha, $responsable, $editarNoticia,
+                            $verBorradores,$verHistorial, $accion];
+                }, $noticias);
 
-            $estadoModelo = model(ModeloEstado::class);
-            $estados = $estadoModelo->find([1,2]);
-    
-            $categoriaModelo = model(ModeloCategoria::class);
-            $categorias = $categoriaModelo -> findAll();
-
-            $data = [
-                'tituloCuerpo' => 'Mis Noticias',
-                'tituloPagina' => 'Mis Noticias',
-                'cabecera' => $cabecera,
-                'noticias' => $contenidoNoticias,        
-            ];
-
-            // Cargar vista principal con la plantilla
-            return view('plantillas/header', $data)            
-                . view('plantillas/tabla', $data)
-                .view('plantillas/footer');
-
-        }
+                $estadoModelo = model(ModeloEstado::class);
+                $estados = $estadoModelo->find([1,2]);
         
+                $categoriaModelo = model(ModeloCategoria::class);
+                $categorias = $categoriaModelo -> findAll();
+
+                $data = [
+                    'tituloCuerpo' => 'Mis Noticias',
+                    'tituloPagina' => 'Mis Noticias',
+                    'cabecera' => $cabecera,
+                    'noticias' => $contenidoNoticias,        
+                ];
+
+                // Cargar vista principal con la plantilla
+                return view('plantillas/header', $data)            
+                    . view('plantillas/tabla', $data)
+                    .view('plantillas/footer');
+
+            }
+        }
     }
-////////////////////////////////////////////////////////////////////////EDITAR Y POST//////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////EDITAR Y POST//////////////////////////////////////////////////////////////
 
     public function editar($idNoticia){
 
@@ -332,11 +333,11 @@ class Noticia extends BaseController
         .view('plantillas/footer');
         }
 
-        private function validarCantidad($cantidadBorradoresActivos, $original, $esValido) {
+    private function validarCantidad($cantidadBorradoresActivos, $original, $esValido) {
         if ($cantidadBorradoresActivos >= 3 && !$original && $esValido) {
             return false; // La validación falla si se cumple esta condición
         }
-        return true; // La validación pasa si la condición no se cumple
+            return true; // La validación pasa si la condición no se cumple
         }
 
     public function postEditar(){
@@ -481,7 +482,7 @@ class Noticia extends BaseController
                 ],
             ],
             'descripcion'  => 'required|max_length[20000]|min_length[10]',
-            //'imagen'  => 'max_size[imagen,1000]|max_dims[imagen,1024,800]|mime_in[imagen,image/png,image/jpeg,image/avif ]', no lee avif
+            'imagen'  => 'uploaded[imagen]|max_size[imagen,1000]|is_image[imagen]|max_dims[imagen,1000,900]',// no lee avif
             'es_activo' => [
                     'rules' => 'maximoBorradoresActivos[maximo]',
                     'errors' => [
@@ -541,6 +542,94 @@ class Noticia extends BaseController
         .view('plantillas/mensajes', ['mensaje'=>'Noticia creada con éxito'])
         .view('plantillas/footer');
     } 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    public function historialNoticia($idNoticia){
+        
+        if(!$this->session->has('id')){
+            return redirect()->to(base_url());
+        }
+
+        $noticia = $this->modeloNoticia->obtenerNoticias($idNoticia);
+        $noticiaHistorial = $this->modeloNoticia->obtenerHistorialNoticia($idNoticia);
+        $cabecera = ['Estado', 'Responsable', 'Fecha/Modificaci&oacute;n', 'Observaciones'];
+
+        $titulo = isset($noticia['titulo']) ? $noticia['titulo'] : 'No disponible';      
+
+        $categoria = isset($noticia['categoria']) ? $noticia['categoria'] : 'No disponible';
+        $fecha = isset($noticia['fecha']) ? $noticia['fecha'] : 'Fecha No disponible';
+
+        $subtitulo = $categoria."     ".$fecha;      
+
+
+        $historial = array_map(function($item) {
+            $estado = isset($item['estado']) ? $item['estado'] : 'No disponible';
+            $responsable = isset($item['responsable']) ? $item['responsable'] : 'Fecha No disponible';
+            $fecha = isset($item['fecha']) ? $item['fecha'] : 'Fecha No disponible';
+            $observaciones = isset($item['observaciones']) ? $item['observaciones'] : 'Fecha No disponible';
+            return [$estado, $responsable, $fecha, $observaciones];
+        }, $noticiaHistorial);
+
     
+        $data = [
+            'tituloCuerpo' => "Historial de noticias",
+            'titulo' => $titulo,
+            'subTitulo' => $subtitulo,
+            'tituloPagina' => 'Histrorial de noticias',
+            'cabecera' => $cabecera,
+            'noticias' => $historial,        
+        ];
+
+          //Cargar vista principal con la plantilla
+        return view('plantillas/header', $data)            
+            . view('plantillas/tabla', $data)
+            .view('plantillas/footer');
+        
+
+    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function validarPublicacion(){
+        if (!$this->session->has('id')  || !$this->session->has('esValidador') || !$this->session->esValidador ==1) {
+            return redirect()->to(base_url());
+        }          
+    
+        $noticias = $this->modeloNoticia->obtenerNoticiasParaValidar();
+          //mapeamos para el contenido de la tabla
+        $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Fecha/estatus', 'Responsable/estatus', 
+                    'Editar']; 
+
+        $contenidoNoticias = array_map(function($item) {
+            // Verificar si las variables están definidas
+            $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
+            $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
+            $fecha = isset($item['fecha']) ? esc($item['fecha']) : 'No disponible';
+            $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
+            $editarNoticia = $this->enlaceEditar($item['id'], $item['id']);
+            $verBorradores = $this->verBorradores($item['id']);     
+            $verHistorial = $this->verHistorial($item['id']);       
+            return [$titulo, $categoria, $fecha, $responsable, $editarNoticia,
+                    $verBorradores,$verHistorial];
+        }, $noticias);
+
+
+        $data = [
+            'tituloCuerpo' => 'Validaciones',
+            'tituloPagina' => 'Validaciones',
+            'cabecera' => $cabecera,
+            'noticias' => $contenidoNoticias,        
+        ];
+
+        // Cargar vista principal con la plantilla
+        return view('plantillas/header', $data)            
+            . view('plantillas/tabla', $data)
+            .view('plantillas/footer');
+
+    }
+
+    public function postvalidarPublicacion(){
+
+    }
+
 }
 

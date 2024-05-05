@@ -6,6 +6,8 @@
     {
 
         protected $table = 'noticia';
+        private $tablaEstado = 'estado';
+        private $tablaUsario = 'usuario';
         private $tablaBorrador = 'borrador';
         private $tablaCategoria = 'categoria';
         private $tablaEstadoNoticia = 'estado_noticia';
@@ -81,16 +83,27 @@
             return $noticias;
         }
 
-     /*   public function obtenerBorradoresNoticiaUsuario($idUsuario){
+        public function obtenerHistorialNoticia($idNoticia) {
+            return $this->db->table($this->tablaEstadoNoticia)
+            ->where('id_noticia', $idNoticia)
+            ->join($this->tablaEstado, 'estado.id = estado_noticia.id_estado')
+            ->join($this->tablaUsario, 'usuario.id = estado_noticia.id_usuario')
+            ->select('estado_noticia.fecha, estado_noticia.observaciones, usuario.correo as responsable, estado.nombre as estado')
+            ->get()->getResultArray();
+        }
 
-            $subconsultaBorrador = '(SELECT * FROM borrador WHERE noticia.id = borrador.id_noticia)';
-
-            $noticias = $this->db->table($this->table)
-                        ->where('id_noticia', $id_noticia);
-                        ->where('estado', 2);
-                        ->order_by('fecha', 'DESC');
-                        ->get('borradores');
-                        return $noticias;
-        }*/
+        public function obtenerNoticiasParaValidar(){
+            $subconsultaEstatus = '(SELECT MAX(fecha) FROM estado_noticia WHERE noticia.id = estado_noticia.id_noticia)';
+            return $this->db->table($this->tablaBorrador)
+                    ->join('noticia', 'noticia.id = borrador.id_noticia')
+                    ->join($this->tablaCategoria, 'categoria.id = borrador.id_categoria')
+                    ->join($this->tablaEstadoNoticia, 'estado_noticia.id_noticia = noticia.id')
+                    ->join($this->tablaUsario, 'usuario.id = noticia.id_usuario')
+                    ->where('estado_noticia.id_estado', 1)
+                    ->where("estado_noticia.fecha = $subconsultaEstatus")
+                    ->orderBy('estado_noticia.fecha', 'desc')
+                    ->select('borrador.titulo, categoria.nombre as categoria, borrador.imagen, noticia.id, estado_noticia.fecha, usuario.correo')
+                    ->get()->getResultArray();
+        }
     }
 

@@ -9,7 +9,7 @@
             <div class = "row g-2">                       
                 <div class="col-md-12">
                     <div style=" text-align: center;">
-                        <label id = "titulo" style = "text-align: center"><b><h2>
+                        <label id = "titulo" style = "text-align: center; margin-top: 40px"><b><h2>
                             <?php if(isset($noticia['titulo'])) echo($noticia['titulo']); ?></h2></b>
                         </label>                  
                     </div>

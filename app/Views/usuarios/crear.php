@@ -45,18 +45,18 @@
             <label>Seleccione Rol</label>
             <div class="col-6">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1"<?= set_value('es_activo_original', $es_activo_original) ?> name="rol[]">
+                    <input class="form-check-input" type="checkbox" value="editor"<?= set_checkbox('editor', "1" ) ?> name="rol[]">
                     <label class="form-check-label" for="flexCheckDefault1">
-                        Validador
+                        Editor
                     </label>
                 </div>
             </div>
 
             <div class="col-6">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="2"<?= set_value('es_activo_original', $es_activo_original) ?> name="rol[]">
+                    <input class="form-check-input" type="checkbox" value="validador"<?= set_checkbox('validador', "2") ?> name="rol[]">
                     <label class="form-check-label" for="flexCheckDefault2">
-                        Editor
+                        Validador
                     </label>
                 </div>
             </div>

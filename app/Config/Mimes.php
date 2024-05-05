@@ -173,9 +173,7 @@ class Mimes
             'audio/x-aiff',
             'audio/aiff',
         ],
-        'avif' => [
-            'image/avif',
-        ],
+        'avif' => 'image/avif',
         'aifc' => 'audio/x-aiff',
         'ram'  => 'audio/x-pn-realaudio',
         'rm'   => 'audio/x-pn-realaudio',
