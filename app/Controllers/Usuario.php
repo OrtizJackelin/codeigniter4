@@ -84,7 +84,6 @@ class Usuario extends BaseController
         $es_validador = 0;
         if(!empty($data['rol[]'])){
             foreach($data['rol[]'] as $roles){
-                var_dump($roles);
                 if($roles === "validador"){
                     $es_validador = 1;
                 }
@@ -177,6 +176,7 @@ class Usuario extends BaseController
     }
 
     public function cerrarSesion(){
+        
         $this->session->destroy();
         $this->session->close();
         return redirect()->to(base_url());

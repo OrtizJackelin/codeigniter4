@@ -1,5 +1,6 @@
 <?= session()->getFlashdata('error') ?>
-<?php $errors = validation_errors();?>
+<?php $errors = validation_errors();
+?>
 
 <section class = "sectionPrincipal">
             
@@ -9,54 +10,51 @@
             <h2> <?php echo esc($tituloCuerpo)?></h2>
         </div><br><br>
 
-        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia/post_editar" enctype="multipart/form-data" >
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia/post_validar" enctype="multipart/form-data" >
             <?= csrf_field() ?>
 
             <div class="col-md-12">
                 <label for="titulo"><b><h5>Título:</h5></b></label>
                 <input type="text" name="titulo" 
                         value="<?= set_value('titulo', $noticia['titulo']) ?>"
-                        class="form-control" required>
+                        class="form-control" readonly>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-12">
                 <label for="categoria"><b><h5>Categoría:</h5></b></label>
-                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "categoria" required>
-                <option value="" <?= set_select('categoria', '') ?>>
-                    Seleccione
-                </option>
-
-                    <?php                     
-                    if(isset($categorias) && is_array($categorias))
-                    {             
-                        foreach($categorias as $categoria){
-                            ?>
-                            <option value="<?= esc($categoria['id']); ?>" <?= $noticia['id_categoria'] == $categoria['id'] ? 'selected' : '' ?>>
-                                <?= esc($categoria['nombre']); ?>
-                            </option>
-
-                            <?php
-                        }
-                    }
-                    ?>
-                </select>
+                <input type = "text" name = "categoria" 
+                        value = "<?= set_value('categoria', $noticia['categoria']) ?>" 
+                        class="form-control" readonly>
             </div>
 
             <div class="col-md-12">
                 <label for="descripcion"><b><h5>Descripción:</h5></b></label>
-                <textarea name="descripcion" cols="45" rows="10" class="form-control">
+                <textarea name="descripcion" cols="45" rows="10" class="form-control" readonly>
                 <?= set_value('descripcion', $noticia['descripcion']) ?>             
-                </textarea required>
+                </textarea>
             </div>
 
-            <label for="inputGroupFile02"><b><h5>Ingresar Imagen:</h5></b></label>
-            <div class="input-group mb-3">
-                <input type="file" class="form-control" name = "imagen" id="inputGroupFile02" accept = "image/avif,image/png,image/jpeg"> <!--acept para colocar el tipo de archivo permitido-->
-                <label class="input-group-text" for="inputGroupFile02"><b>Upload</b></label>
-            </div>
+                         
+            <div class="col-md-12">
+                <label for="inputGroupFile02"><b><h5>Imagen:</h5></b></label> 
+                <div>  
+                    <label id = "imagen" style = "text-align: center"><b><h8>
+                        <div class = "container">
+                            <img src="<?php if(isset($noticia['imagen']) && !empty($noticia['imagen'])){
+                                                echo "../../imagenesNoticia/".$noticia['imagen'];
+                                            } else {
+                                                echo "../../imagenesNoticia/"."imagen-no-disponible.jpeg";
+                                            }
+                                    ?>" 
+                                class="img-fluid" alt="..."  style="max-width: 624px; max-height: 368px;"></h8></b>
+                        </div>
+                    </label>  
+                </div>                   
+            </div> 
+        
 
             <div class="col-md-4">
-                <label for="estado"><b><h5>Guardar como:</h5></b></label>
+                <label for="estado"><b><h5>Acción:</h5></b></label>
                 <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "estado" required>
                     <option value="" <?= set_select('estado', '') ?>>
                         Seleccione
@@ -67,38 +65,31 @@
                     {             
                         foreach($estados as $estado){
                             ?>
-                            <option value="<?= esc($estado['id']);?>"<?= set_select('estado', $estado['id']) ?>>
-                                <?= esc($estado['nombre']);?>
+                            <option value="<?= esc($estado['id']);?>"<?= set_select('estado', $estado['id']) ?>><?= esc($estado['nombre']);?>
                             </option>
                             <?php
                         }
                     }
                     ?>
                 </select>
+            </div>
 
-            </div><br><br><br>
-            
             <div class="col-md-12">
-                <div class="form-check form-switch">
-                    <input class="form-check-input" name = "es_activo" type="checkbox" 
-                        id="flexSwitchCheckDefault" 
-                        <?php if( $noticia['es_activo']) echo"checked" ?>
-                    >            
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Activar/Desactivar Publicación</label>
-                </div>
+                <label for="descripcion"><b><h5>Observaciones:</h5></b></label>
+                <textarea name="observaciones" cols="45" rows="5" class="form-control">
+                <?= set_value('observaciones') ?>             
+                </textarea>
             </div>
 
             <input type = "hidden" name = "id" value = "<?= set_value('id', $noticia['id']) ?>">
-            <?php $es_activo_original = $noticia['es_activo']?>
-            <input type = "hidden" name = "es_activo_original" value = "<?= set_value('es_activo_original', $es_activo_original) ?>">
-
+            
             <div class="row justify-content-center " style = "margin-top: 60px;">
                 <div class="col-3">
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
                 </div>
                 <div class="col-3">
                     <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
-                        onclick="window.location.href='<?php echo base_url('noticia/mis_noticias'); ?>'">
+                        onclick="window.location.href='<?php echo base_url('noticia/validar'); ?>'">
                             CANCELAR
                     </button>
                 </div>

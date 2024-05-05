@@ -40,7 +40,12 @@
                     <div >
                         <label id = "imagen" style = "text-align: center"><b><h8>
                             <div class = "container">
-                                <img src="<?php if(isset($noticia['imagen'])) echo "../../imagenesNoticia/".$noticia['imagen']; ?>" 
+                                <img src="<?php if(isset($noticia['imagen']) && $noticia['imagen']!= ""){
+                                                    echo "../../imagenesNoticia/".$noticia['imagen']; 
+                                                }else{
+                                                    echo "../../imagenesNoticia/"."imagen-no-disponible.jpeg";
+                                                }
+                                            ?>" 
                                     class="img-fluid" alt="..."  style="max-width: 524px; max-height: 368px;"></h8></b>
                             </div>
                         </label>                  

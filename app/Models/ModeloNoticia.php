@@ -18,7 +18,7 @@
             // Subconsulta para obtener la última fecha de modificación para cada ID
             $subconsulta = '(SELECT MAX(fecha_modificacion) FROM borrador WHERE noticia.id = borrador.id_noticia)';    
             $campos ="noticia.id as id, noticia.es_activo, borrador.fecha_modificacion as fecha, borrador.titulo, 
-                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria";   
+                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria, borrador.id_categoria";   
             
             if($id > 0){
                 $noticia =  $this->db->table($this->table)
@@ -52,7 +52,7 @@
                         ->join($this->tablaEstadoNoticia, 'noticia.id = estado_noticia.id_noticia')
                         ->where("estado_noticia.id = $subconsultaEstatus")
                         ->where('estado_noticia.id_estado', 2)
-                        ->where('noticia.es_activo', true)
+                        ->where('noticia.es_activo', 1)
                         ->select('COUNT(*) as cantidad')                        
                         ->get()->getRow();
 
@@ -104,6 +104,17 @@
                     ->orderBy('estado_noticia.fecha', 'desc')
                     ->select('borrador.titulo, categoria.nombre as categoria, borrador.imagen, noticia.id, estado_noticia.fecha, usuario.correo')
                     ->get()->getResultArray();
+        }
+
+        public function obtenerCantindadVcesEnEstadoValidar($id){
+            $noticia =  $this->db->table($this->tablaEstadoNoticia)
+                   ->where('estado_noticia.id_estado = 1')
+                   ->where('estado_noticia.id_noticia', $id)
+                   ->select('COUNT(*) as cantidad')
+                   ->get()->getRow();
+            if($noticia){
+                return $noticia->cantidad;
+            }       
         }
     }
 

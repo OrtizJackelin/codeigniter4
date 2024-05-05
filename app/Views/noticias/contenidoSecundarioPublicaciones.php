@@ -8,7 +8,6 @@
             <?php
             if (!empty($listadoNoticias) && is_array($listadoNoticias)){
 
-                //var_dump($listadoNoticias);
                 foreach($listadoNoticias as $items){    
                     echo "<tr>";   
                 ?>

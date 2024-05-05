@@ -1,3 +1,24 @@
+<?php
+    $session = session();
+    $mensaje = $session->getFlashdata('mensaje');
+
+    // Verifica si hay un mensaje
+    if ($mensaje !== null) {
+    ?>
+        <div id="liveAlertPlaceholder"></div>                 
+        <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
+            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
+            <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?> 
+
+            <div>
+                <H6><b><?= esc( $mensaje); ?></H6></b>                
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div> 
+    <?php            
+    }
+?>
+
 <div class="container-fluid" > 
 
     <?php if(isset($tituloCuerpo)) {?>             
@@ -28,7 +49,6 @@
         <table class="table table-striped table-hover" id = "solicitudVerificacion" name = "solicitudVerificacion">
 
             <?php
-             //var_dump($noticias);
             if (!empty($noticias) && is_array($noticias)){ 
                 echo"<tr>";
                 foreach($cabecera as $titulo){
