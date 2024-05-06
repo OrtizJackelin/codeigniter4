@@ -75,7 +75,8 @@
 
                         <?php 
                         } 
-                        ?>                     
+                        ?>  
+                        <li><a class="dropdown-item" href="../../noticia/noticias">Historial de noticias</a></li>                   
                         <li><a class="dropdown-item" href="../../usuario/cerrar_sesion">Cerrar sesión</a></li>
                         <?php
                     } else { ?>

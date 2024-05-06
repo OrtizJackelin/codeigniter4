@@ -26,12 +26,14 @@ class Noticia extends BaseController
         $this->fechaHoraActual =Time::now();
        
     }
- 
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function formatearFecha($fecha){
         $fechaFormateada = new \CodeIgniter\I18n\Time($fecha);
         return  $fechaFormateada->toLocalizedString('dd MMMM yyyy  hh:mm:ss ');
     }
-
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private function enlaceEnImagenVerDetalleNoticia($id, $imagen){
         return '<a href="' . site_url("/noticia/" . esc($id, 'url')) . '">
                 <img src="' . site_url("imagenesNoticia/" . esc($imagen, 'url')) . '" 
@@ -40,18 +42,17 @@ class Noticia extends BaseController
                 </a>';
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private function enlaceEnNoticiaVerDetalleNoticia($id){
         return '<a href="' . site_url("/noticia/" . esc($id, 'url')) . '" style="text-decoration: none;">
                     Ver más
                 </a>';
     }
 
-   /* private function enlaceEnListadosTituloVerDetalleNoticia($id,$titulo){   
-        $url = '/noticia/' . esc($id, 'url');
-        $titulo = $titulo;
-        return "<a href='$url'>$titulo</a>";
-    }*/
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public function index()
     {
         // Instancia del modelo
@@ -696,8 +697,53 @@ class Noticia extends BaseController
     
         // Redirecciona a la siguiente página
         return redirect()->to('noticia/validar');
-
         
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public function noticias(){
+
+        if ($this->session->has('id')) {
+
+            $noticias = $this->modeloNoticia->obtenerTodasLasNoticias();
+        
+            //mapeamos para el contenido de la tabla
+            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Fecha/estatus', 'Responsable/estatus', 
+                        'Ver/detalle'];
+
+            
+
+            $contenidoNoticias = array_map(function($item) {
+                // Verificar si las variables están definidas
+                $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
+                $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
+                $estado = $this->esActivo($item['es_activo']);                
+                $fecha = isset($item['fecha']) ? esc($item['fecha']) : 'No disponible';
+                $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
+                $verHistorial = $this->verHistorial($item['id']);           
+                return [$titulo, $categoria, $estado, $fecha, $responsable, $verHistorial ];
+            }, $noticias);
+
+            $estadoModelo = model(ModeloEstado::class);
+            $estados = $estadoModelo->find([1,2,5,6,7,9,10,12]);
+    
+            $categoriaModelo = model(ModeloCategoria::class);
+            $categorias = $categoriaModelo -> findAll();
+
+            $data = [
+                'tituloCuerpo' => 'Noticias',
+                'tituloPagina' => 'Noticias',
+                'cabecera' => $cabecera,
+                'noticias' => $contenidoNoticias,        
+            ];
+
+            // Cargar vista principal con la plantilla
+            return view('plantillas/header', $data)            
+                . view('plantillas/tabla', $data)
+                .view('plantillas/footer');
+            
+        }
     }
 
 }

@@ -18,7 +18,8 @@
             // Subconsulta para obtener la última fecha de modificación para cada ID
             $subconsulta = '(SELECT MAX(fecha_modificacion) FROM borrador WHERE noticia.id = borrador.id_noticia)';    
             $campos ="noticia.id as id, noticia.es_activo, borrador.fecha_modificacion as fecha, borrador.titulo, 
-                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria, borrador.id_categoria";   
+                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria, 
+                    borrador.id_categoria";   
             
             if($id > 0){
                 $noticia =  $this->db->table($this->table)
@@ -115,6 +116,26 @@
             if($noticia){
                 return $noticia->cantidad;
             }       
+        }
+
+        public function obtenerTodasLasNoticias($id = 0)
+        {
+            // Subconsulta para obtener la última fecha de modificación para cada ID
+            $subconsulta = '(SELECT MAX(fecha_modificacion) FROM borrador WHERE noticia.id = borrador.id_noticia)';    
+            $campos ="noticia.id as id, noticia.es_activo, borrador.fecha_modificacion as fecha, borrador.titulo, 
+                    borrador.descripcion, borrador.id as id_borrador, borrador.imagen, categoria.nombre as categoria, 
+                    borrador.id_categoria, usuario.correo";   
+
+            // Realiza una consulta para unir las tablas y seleccionar los datos
+            $noticia =  $this->db->table($this->table)
+                        ->join($this->tablaUsario,"noticia.id_usuario = usuario.id")
+                        ->join($this->tablaBorrador, "noticia.id = $this->tablaBorrador.id_noticia")
+                        ->where("$this->tablaBorrador.fecha_modificacion = $subconsulta")
+                        ->join($this->tablaCategoria, "$this->tablaCategoria.id = $this->tablaBorrador.id_categoria") 
+                        ->select($campos)
+                        ->get()->getResultArray();
+            return $noticia;
+                     
         }
     }
 

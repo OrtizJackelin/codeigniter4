@@ -11,6 +11,7 @@ $routes->get('/', 'Noticia::index');
 $routes->get('noticia', [Noticia::class, 'index']);           // mismo que la linea anterior pero cuando apuntan a noticia
 $routes->get('noticia/nueva', [Noticia::class, 'nueva']);
 $routes->post('noticia', [Noticia::class, 'postNueva']);
+$routes->get('noticia/noticias', [Noticia::class, 'noticias']);
 $routes->get('noticia/mis_noticias', [Noticia::class, 'misNoticias']);
 $routes->get('noticia/nuevo_estado', [Noticia::class, 'cambiarEstadoYBoton']);
 $routes->post('noticia/post_editar', [Noticia::class, 'postEditar']);
