@@ -1,5 +1,24 @@
-<?= session()->getFlashdata('error') ?>
-<?= validation_list_errors() ?>
+<?php
+    $session = session();
+    $mensaje = session()->getFlashdata('mensaje'); 
+    $errors = validation_errors();
+    if($errors || $mensaje !== null){
+?>
+        <div id="liveAlertPlaceholder"></div>      
+
+        <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
+            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
+                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
+                <div>
+                    <H6><b><?= validation_list_errors();  ?></H6></b>
+                    <H6><b><?= $mensaje;  ?></H6></b>
+                    
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div> 
+    <?php
+    }
+?>
 
 <section class = "sectionPrincipal">
     <div class=" col-md-12 text-center" style=" margin-top: 20px;">
@@ -26,22 +45,5 @@
             </div>
 
         </form>
-
-        <div id="liveAlertPlaceholder"></div>      
-
-        <?php
-           /*  if (isset($errors)){
-                ?>
-            <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
-            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../static/imagenes/redes/exclamation-triangle.svg" ?>                
-                <div>
-                    <H6><b><?php echo $errors; ?></H6></b>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div> 
-            <?php
-            }*/
-        ?>
     </div>
 </section>

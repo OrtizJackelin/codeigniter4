@@ -431,13 +431,13 @@ class Noticia extends BaseController
                 $modeloBorrador->save(['id'=> $idBorrador, 'imagen'=> $nombreArchivo]);
             }
         } else{
+            $this->session->set_flashdata('mensaje', $imagen->getErrorString()); //para guardar el error en una variable de seccion que luego se elimina sola "flashdata"
+            return redirect()->to('noticia/post_editar');
+        }   
 
-            echo $imagen->getErrorString();
-        }    
-   
-        return view('plantillas/header',['tituloPagina'=>'Noticia Editada'])
-        .view('plantillas/mensajes', ['mensaje'=>'Noticia editada con éxito'])
-        .view('plantillas/footer');
+        $mensaje = "¡Noticia editada con exito!";
+        $this->session->setFlashdata('mensaje', $mensaje);    
+        return redirect()->to('noticia/mis_noticias');  
     }
 
     ////////////////////////////////////////////////////////NUEVA Y POST/////////////////////////////////////////////////////////////////////////
@@ -530,11 +530,9 @@ class Noticia extends BaseController
             ]);
 
             if(!$imagen->isValid()){              //////REVISAR
-                echo $imagen->getErrorString();
-               // $this->session->set_flashdata('error_imagen', $imagen->getErrorString()); para guardar el error en una variable de seccion que luego se elimina sola "flashdata"
-                //redirect('tu_controlador/tu_metodo');
-                // //if ($this->session->flashdata('error_imagen'))://Para la vista
-                //exit;
+               $this->session->set_flashdata('mensaje', $imagen->getErrorString()); //para guardar el error en una variable de seccion que luego se elimina sola "flashdata"
+                return redirect()->to('noticia/nueva');
+      
             } else{
                 if(!$imagen->hasMoved()){            //////REVISAR
                     $ruta = ROOTPATH . 'public/imagenesNoticia';
@@ -545,10 +543,11 @@ class Noticia extends BaseController
                     $modeloBorrador->save(['id'=> $idBorrador, 'imagen'=> $nombreArchivo]);
                 }
             } 
-        }              
-        return view('plantillas/header',['tituloPagina'=>'Noticia Creada'])
-        .view('plantillas/mensajes', ['mensaje'=>'Noticia creada con éxito'])
-        .view('plantillas/footer');
+        } 
+        $mensaje = "¡Noticia creada con exito!";
+        $this->session->setFlashdata('mensaje', $mensaje);    
+        // Redirecciona a la siguiente página
+        return redirect()->to('noticia');             
     } 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -695,8 +694,6 @@ class Noticia extends BaseController
         $mensaje = "¡Cambios guardados con exito!";
         $this->session->setFlashdata('mensaje', $mensaje);
     
-        
-        $mensaje = $this->session->getFlashdata('mensaje');
         // Redirecciona a la siguiente página
         return redirect()->to('noticia/validar');
 

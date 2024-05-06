@@ -103,10 +103,10 @@ class Usuario extends BaseController
             'es_validador' => $es_validador,
         ]);
 
-
-        return view('plantillas/header',['tituloPagina'=>'Noticia Creada'])
-            .view('plantillas/mensaje')
-            .view('plantillas/footer');
+        $mensaje = "¡Usuario creado con exito!";
+        $this->session->setFlashdata('mensaje', $mensaje);    
+        // Redirecciona a la siguiente página
+        return redirect()->to('noticia');  
     }
 
     public function iniciarSesion(){
@@ -126,10 +126,11 @@ class Usuario extends BaseController
     }
 
     public function validarSesion(){
-        helper('form');
+    
         $data = $this->request->getPost(['correo', 'clave']);
-       
-        if (!$this->validateData($data, [
+
+        $validation = \Config\Services::validation();
+        $validation->setRules([
             'correo'  => [
                 'rules' => 'required|max_length[50]|min_length[8]
                             |regex_match[/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/]',
@@ -144,11 +145,13 @@ class Usuario extends BaseController
                     'min_length' => 'La clave debe tener al menos 8 caracteres.',
                     'regex_match' => 'La clave debe contener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.',
                 ]  
-            ]         
-        ])) {
-            // Manejar errores de validación aquí
+            ],         
+        ]);
+
+        if (! $validation->run($data)) {
             return $this->iniciarSesion();
         }
+        $datosValidados = $validation->getValidated();      
 
         $usuario = $this->modeloUsuario
                     ->where('correo', $data['correo'])
@@ -164,12 +167,12 @@ class Usuario extends BaseController
                 'esEditor' => $usuario['es_editor']
             ];
             $this->session->set($datosUsuario);
-
             return redirect()->to(base_url());
              
 
         } else {
-            echo "usuario/clave invalido";
+            $mensaje =  "usuario/clave invalido";
+            $this->session->setFlashdata('mensaje', $mensaje);     
             return $this->iniciarSesion();
         }
         
