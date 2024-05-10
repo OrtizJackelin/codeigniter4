@@ -18,6 +18,7 @@ $routes->post('noticia/post_editar', [Noticia::class, 'postEditar']);
 $routes->get('noticia/validar', [Noticia::class, 'historialParaValidar']);
 $routes->post('noticia/post_validar', [Noticia::class, 'postDetalleParaValidar']);
 $routes->get('noticia/historial/(:segment)', [Noticia::class, 'historialNoticia']);
+$routes->get('noticia/(:segment)/deshacer_operacion/', [Noticia::class, 'deshacerUltimaOperacion']);
 $routes->get('noticia/editar_noticia/(:segment)', [Noticia::class, 'editar']);
 $routes->get('noticia/validar_noticia/(:segment)', [Noticia::class, 'detalleParaValidar']);
 $routes->get('noticia/(:segment)', [Noticia::class, 'detalleNoticia']); // segment ->cuando no se el valor que llega en ese segmento no es conocido

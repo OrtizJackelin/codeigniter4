@@ -69,9 +69,7 @@
                         } 
                         if($session->has('esValidador') && $session->esValidador ==1) {//validador
                         ?>
-                            <li><a class="dropdown-item" href="../../noticia/validar">Mis Validaciones</a></li>
-                            <li><a class="dropdown-item" href="">Publicar</a></li>
-                            
+                            <li><a class="dropdown-item" href="../../noticia/validar">Mis Validaciones</a></li>                           
 
                         <?php 
                         } 

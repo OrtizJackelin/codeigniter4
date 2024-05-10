@@ -24,6 +24,8 @@ class Noticia extends BaseController
         $this->session = session();
         $this->modeloNoticia = model(ModeloNoticia::class);
         $this->fechaHoraActual =Time::now();
+        $modeloEstadoNoticia = model(ModeloEstadoNoticia::class);
+        $modeloEstadoNoticia->publicarAutomticamente();
        
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -56,7 +58,8 @@ class Noticia extends BaseController
     public function index()
     {
         // Instancia del modelo
-        $noticias = $this->modeloNoticia->obtenerNoticias();      
+        //$noticias = $this->modeloNoticia->obtenerNoticias();     
+        $noticias = $this->modeloNoticia->obtenerNoticiasEstadoPublicada(); 
   
         //setlocale(LC_TIME, 'es_AR');   
 
@@ -240,7 +243,7 @@ class Noticia extends BaseController
         }
     }
 
-    public function cambiarEstadoYBoton(){
+    private function cambiarEstadoYBoton(){
      
         $esActivo = $this->request->getVar('esActivo');
         $id = $this->request->getVar('id');
@@ -329,6 +332,12 @@ class Noticia extends BaseController
             throw new PageNotFoundException('No se encontro la noticia '.$idNoticia);
         }
 
+        if($noticia['id_estado'] != 2){
+            $mensaje = "¡Operación no permitida!";
+            $this->session->setFlashdata('mensaje', $mensaje);    
+            return redirect()->to('noticia/mis_noticias');  
+        }
+
         $estadoModelo = model(ModeloEstado::class);
         $estados = $estadoModelo->find([1,2,12,13]);
 
@@ -379,7 +388,7 @@ class Noticia extends BaseController
                 ],
             ],
             'descripcion'  => 'required|max_length[20000]|min_length[10]',
-            //'imagen'  => 'uploaded[imagen]|max_size[imagen,524]|is_image[imagen]|max_dims[imagen,800,500]|permit_empty ',
+            'imagen'  => 'uploaded[imagen]|max_size[imagen,524]|is_image[imagen]|max_dims[imagen,800,500]',
             'es_activo' => [
                     'rules' => 'maximoBorradoresActivos[maximo]',
                     'errors' => [
@@ -448,6 +457,12 @@ class Noticia extends BaseController
         if(!$this->session->has('id')){
             return redirect()->to(base_url());
         }
+
+        /*if($noticia['id_estado'] != 2){
+            $mensaje = "¡Operación no permitida!";
+            $this->session->setFlashdata('mensaje', $mensaje);    
+            return redirect()->to('noticia/mis_noticias');  
+        }*/
       
         $estadoModelo = model(ModeloEstado::class);
         $estados = $estadoModelo->find([1,2]);
@@ -552,15 +567,50 @@ class Noticia extends BaseController
     } 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function deshacerUltimaOperacion($id){
+        if(!$this->session->has('id')){
+            return redirect()->to(base_url());
+        };
+        $noticiaHistorial = $this->modeloNoticia->obtenerHistorialNoticia($id);        
+        $tamano = count($noticiaHistorial);
+        if($tamano > 1 && $noticiaHistorial[$tamano-1]['id_usuario'] == $this->session->id){
+
+            $modeloEstadoNoticia = model(ModeloEstadoNoticia::class);      
+            $modeloEstadoNoticia->insert([
+                'id_usuario'=> $this->session->id, 
+                'id_noticia' => $id,
+                'id_estado'  => $noticiaHistorial[$tamano-2]['id_estado'],
+                'observaciones'  => $noticiaHistorial[$tamano-2]['observaciones'],
+            ]);
+            return $this->historialNoticia($id);  
+        }
+        return $this->noticias();
+    }
+    
     public function historialNoticia($idNoticia){
         
         if(!$this->session->has('id')){
             return redirect()->to(base_url());
         }
 
+
         $noticia = $this->modeloNoticia->obtenerNoticias($idNoticia);
         $noticiaHistorial = $this->modeloNoticia->obtenerHistorialNoticia($idNoticia);
         $cabecera = ['Estado', 'Responsable', 'Fecha/Modificaci&oacute;n', 'Observaciones'];
+
+        $url = base_url('noticia/'.$idNoticia.'/deshacer_operacion'); 
+        
+        $tamano = count($noticiaHistorial);
+        $botonDeshacerUltimaOPeracion = "";
+      
+        if($tamano > 1 && $noticiaHistorial[$tamano-1]['id_usuario'] == $this->session->id){
+            $botonDeshacerUltimaOPeracion = '<button type="buttom" style="min-width: 82px!important;" 
+                                                class="btn btn-secondary btn-block mt-2 btn-sm " id="cancelar" name="activar_validar"
+                                                onclick="window.location.href=\'' . $url . '\'">
+                                                Deshacer &uacute;ltima operaci&oacute;n
+                                            </button>';
+        }
+    
 
         $titulo = isset($noticia['titulo']) ? $noticia['titulo'] : 'No disponible';      
 
@@ -580,17 +630,19 @@ class Noticia extends BaseController
 
     
         $data = [
-            'tituloCuerpo' => "Historial de noticias",
+            'tituloCuerpo' => "Historial de operaciones",
             'titulo' => $titulo,
             'subTitulo' => $subtitulo,
-            'tituloPagina' => 'Histrorial de noticias',
+            'tituloPagina' => 'Histrorial de operaciones',
             'cabecera' => $cabecera,
-            'noticias' => $historial,        
+            'noticias' => $historial,    
+            'deshacer'   => $botonDeshacerUltimaOPeracion
         ];
 
           //Cargar vista principal con la plantilla
         return view('plantillas/header', $data)            
             . view('plantillas/tabla', $data)
+            .view('noticias/botonVolverCambios', $data)
             .view('plantillas/footer');
         
 
@@ -601,7 +653,8 @@ class Noticia extends BaseController
 
         if (!$this->session->has('id')  || !$this->session->has('esValidador') || !$this->session->esValidador ==1) {
             return redirect()->to(base_url());
-        }          
+        }  
+        
     
         $noticias = $this->modeloNoticia->obtenerNoticiasParaValidar();
           //mapeamos para el contenido de la tabla
@@ -633,17 +686,24 @@ class Noticia extends BaseController
 
     }
 
-    public function detalleParaValidar($idNoticia){
+    public function detalleParaValidar($idNoticia){        
 
         if(!$this->session->has('id')){
             return redirect()->to(base_url());
         }
-    
+        
         $noticia = $this->modeloNoticia->obtenerNoticias($idNoticia);
 
         if(empty($noticia)){
             throw new PageNotFoundException('No se encontro la noticia '.$idNoticia);
         }
+
+        if($noticia['id_estado'] != 1){
+            $mensaje = "¡Operación no permitida!";
+            $this->session->setFlashdata('mensaje', $mensaje);    
+            return redirect()->to('noticia/validar');  
+        }           
+
 
         $estadoModelo = model(ModeloEstado::class);
 
@@ -709,20 +769,19 @@ class Noticia extends BaseController
             $noticias = $this->modeloNoticia->obtenerTodasLasNoticias();
         
             //mapeamos para el contenido de la tabla
-            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Fecha/estatus', 'Responsable/estatus', 
+            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Es_Activo', 'Fecha/estatus', 'Editor', 
                         'Ver/detalle'];
-
             
-
             $contenidoNoticias = array_map(function($item) {
                 // Verificar si las variables están definidas
                 $titulo = isset($item['titulo']) ? esc($item['titulo']) : 'No disponible';
                 $categoria = isset($item['categoria']) ? esc($item['categoria']) : 'No disponible';
-                $estado = $this->esActivo($item['es_activo']);                
+                $estado = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
+                $es_activo = $this->esActivo($item['es_activo']);                
                 $fecha = isset($item['fecha']) ? esc($item['fecha']) : 'No disponible';
                 $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
                 $verHistorial = $this->verHistorial($item['id']);           
-                return [$titulo, $categoria, $estado, $fecha, $responsable, $verHistorial ];
+                return [$titulo, $categoria, $estado, $es_activo, $fecha, $responsable, $verHistorial ];
             }, $noticias);
 
             $estadoModelo = model(ModeloEstado::class);
@@ -745,6 +804,7 @@ class Noticia extends BaseController
             
         }
     }
+
 
 }
 
