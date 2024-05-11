@@ -28,19 +28,20 @@
             <h2> <?php echo esc($tituloCuerpo)?></h2>
         </div><br><br>
 
-        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia" enctype="multipart/form-data" >
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="<?=base_url('noticia/post_nueva')?>" 
+            enctype="multipart/form-data" >
             <?= csrf_field() ?>
 
             <div class="col-md-12">
                 <label for="titulo"><b><h5>Título:</h5></b></label>
-                <input type="text" name="titulo" 
-                        value="<?= set_value('titulo') ?>" 
-                        class="form-control" required>
+                <input type="text" name="titulo" autocomplete="off"
+                    value="<?= set_value('titulo') ?>" class="form-control" required>
             </div>
 
             <div class="col-md-4">
                 <label for="categoria"><b><h5>Categoría:</h5></b></label>
-                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "categoria" required>
+                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" 
+                    name = "categoria" required>
                 <option value="" <?= set_select('categoria', '') ?>>
                     Seleccione
                 </option>
@@ -62,7 +63,7 @@
 
             <div class="col-md-12">
                 <label for="descripcion"><b><h5>Descripción:</h5></b></label>
-                <textarea name="descripcion" cols="45" rows="10" class="form-control">
+                <textarea name="descripcion" cols="45" rows="10" class="form-control" autocomplete="off">
                 <?= set_value('descripcion') ?>             
                 </textarea required>
             </div>
@@ -103,6 +104,7 @@
                 </div>
             </div>
 
+            
             <div class="row justify-content-center " style = "margin-top: 60px;">
                 <div class="col-3">
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>

@@ -19,6 +19,7 @@
     <?php
     }
 ?>
+        <div id="liveAlertPlaceholder"></div>      
 
 <section class = "sectionPrincipal">
             
@@ -28,7 +29,8 @@
             <h2> <?php echo esc($tituloCuerpo)?></h2>
         </div><br><br>
 
-        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia/post_editar" enctype="multipart/form-data" >
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="<?=base_url('noticia/post_editar')?>" 
+            enctype="multipart/form-data" >
             <?= csrf_field() ?>
 
             <div class="col-md-12">
@@ -86,7 +88,7 @@
                     {             
                         foreach($estados as $estado){
                             ?>
-                            <option value="<?= esc($estado['id']);?>"<?= set_select('estado', $estado['id']) ?>>
+                            <option value="<?= esc($estado['id']);?>"<?= $noticia['id_estado'] == $estado['id'] ? 'selected' : '' ?>>
                                 <?= esc($estado['nombre']);?>
                             </option>
                             <?php
@@ -96,7 +98,7 @@
                 </select>
 
             </div><br><br><br>
-            
+           
             <div class="col-md-12">
                 <div class="form-check form-switch">
                     <input class="form-check-input" name = "es_activo" type="checkbox" 
@@ -106,6 +108,23 @@
                     <label class="form-check-label" for="flexSwitchCheckDefault">Activar/Desactivar Publicación</label>
                 </div>
             </div>
+
+            <div class="col-md-12">
+                <label ><b><h5>Imagen:</h5></b></label> 
+                <div>  
+                    <label id = "imagenVieja" style = "text-align: center"><b><h8>
+                        <div class = "container">
+                            <img src="<?php if(isset($noticia['imagen']) && !empty($noticia['imagen'])){
+                                                echo base_url('/imagenesNoticia/' . $noticia['imagen']);
+                                            }else{
+                                                echo base_url('/imagenesNoticia/' . "imagen-no-disponible.jpeg");
+                                            }
+                                    ?>" 
+                                class="img-fluid" alt="..."  style="max-width: 624px; max-height: 368px;"></h8></b>
+                        </div>
+                    </label>  
+                </div>                   
+            </div> 
 
             <input type = "hidden" name = "id" value = "<?= set_value('id', $noticia['id']) ?>">
             <?php $es_activo_original = $noticia['es_activo']?>
@@ -124,23 +143,5 @@
             </div>
 
         </form><br>
-
-        <div id="liveAlertPlaceholder"></div>      
-
-        <?php
-             if($errors){
-                ?>
-            <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
-            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
-                <div>
-                    <H6><b><?= validation_list_errors() ?></H6></b>
-                  
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div> 
-            <?php
-            }
-        ?>
     </div>
 </section> 

@@ -9,13 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
-    <link rel="stylesheet" href="../../estilos/style.css" type="text/css">
+    <link rel="stylesheet" href="<?= base_url('estilos/style.css') ?>" type="text/css">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../../estilos/bootstrap.min.css">
-    <link rel="stylesheet" href="../../estilos/bootstrap-icons.css">
-    <link href="../../estilos/bootstrap.min.css" rel="stylesheet"
+    <link rel="stylesheet" href="<?= base_url('estilos/bootstrap.min.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('estilos/bootstrap-icons.css')?>">
+    <link href="<?= base_url('estilos/bootstrap.min.css')?>" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!--<script type="text/javascript" src="../../js/validaciones.js"></script>-->
+    <!--<script type="text/javascript" src="<?= base_url('js/validaciones.js')?>"></script>-->
   
     <title><?php echo esc($tituloPagina)?></title>
 </head>
@@ -25,8 +25,8 @@
         class=" sticky-top border-bottom background "><!--le saque el overflow:hidden; en style-->
 
         <div class= "container-fluid">
-            <a class="navbar-brand" href="../../noticia">
-            <img src="../../imagenes/imagenesIndex/Dnoticias2.png" alt="logo" 
+            <a class="navbar-brand" href="<?php echo base_url('noticia') ?>">
+            <img src="<?= base_url('imagenes/imagenesIndex/Dnoticias2.png')?>" alt="logo" 
                     style=" max-height:60px; margin:5px; " width="auto"
                 class="d-inline-block align-text-top">
             </a>
@@ -36,17 +36,17 @@
             <div class="btn-group " style="margin:4px; z-index:1111;  max-height: 36px;">
                 <?php if ($session->has('id')) {  ?>
                     <a style="text-decoration:none; padding:0px; border-radius:0px; " class="dropdown-item"
-                        href="../../noticia">
+                        href="<?php base_url('/noticia') ?>">
                         <button type="button" class="btn btn-primary" style="height:100%;"> <img
-                                src="../../imagenes/redes/person-circle.svg" alt="person-circle">
+                                src="<?= base_url('imagenes/redes/person-circle.svg')?>" alt="person-circle">
                         </button>
                     </a>
                 
                 <?php } else { ?>
                     <a style="text-decoration:none; padding:0px; border-radius:0px; " class="dropdown-item"
-                    href="../../usuario/iniciar_sesion">
+                    href="../usuario/iniciar_sesion">
                         <button type="button" class="btn btn-primary" style="height:100%;"> <img
-                                src="../../imagenes/redes/person-circle.svg" alt="person-circle">
+                                src="<?= base_url('imagenes/redes/person-circle.svg')?>" alt="person-circle">
                         </button>
                     </a>
             
@@ -62,24 +62,24 @@
                     if ($session->has('id')) { 
                         if($session->has('esEditor') && $session->esEditor ==1){//editor
                         ?>
-                            <li><a class="dropdown-item" href="../../noticia/mis_noticias">Mis noticias</a></li>
-                            <li><a class="dropdown-item" href="../../noticia/nueva">Crear nueva noticia</a></li>
+                            <li><a class="dropdown-item" href="<?= base_url('noticia/mis_noticias')?>">Mis noticias</a></li>
+                            <li><a class="dropdown-item" href="<?= base_url('noticia/nueva')?>">Crear nueva noticia</a></li>
                     
                         <?php
                         } 
                         if($session->has('esValidador') && $session->esValidador ==1) {//validador
                         ?>
-                            <li><a class="dropdown-item" href="../../noticia/validar">Mis Validaciones</a></li>                           
+                            <li><a class="dropdown-item" href="<?= base_url('noticia/validar')?>">Mis Validaciones</a></li>                           
 
                         <?php 
                         } 
                         ?>  
-                        <li><a class="dropdown-item" href="../../noticia/noticias">Historial de noticias</a></li>                   
-                        <li><a class="dropdown-item" href="../../usuario/cerrar_sesion">Cerrar sesión</a></li>
+                        <li><a class="dropdown-item" href="<?= base_url('noticia/noticias')?>">Historial de noticias</a></li>                   
+                        <li><a class="dropdown-item" href="<?= base_url('usuario/cerrar_sesion')?>">Cerrar sesión</a></li>
                         <?php
                     } else { ?>
-                    <li><a class="dropdown-item" href="../../usuario/iniciar_sesion">Iniciar Sesion</a></li>
-                    <li><a class="dropdown-item" href="../../../usuario/nueva">Registrarse</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('usuario/iniciar_sesion')?>">Iniciar Sesion</a></li>
+                    <li><a class="dropdown-item" href="<?= base_url('usuario/nueva')?>">Registrarse</a></li>
                     <?php }?>
                 </ul>
 

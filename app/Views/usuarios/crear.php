@@ -28,24 +28,24 @@
             <h4> <?php echo esc($tituloCuerpo)?></h4>
         </div>
 
-        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/usuario" enctype="multipart/form-data" >
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="<?=base_url('/usuario')?>" enctype="multipart/form-data" >
         <?= csrf_field() ?>
 
             <div class="col-md-6">
                 <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" class="form-control" id="nombre" name = "nombre" 
+                <input type="text" class="form-control" id="nombre" name = "nombre" autocomplete="off"
                 value = "<?= set_value('nombre') ?>" pattern="[A-Za-z]{2,15}" required>
             </div>
 
             <div class="col-md-6">
                 <label for="apellido" class="form-label">Apellido</label>
-                <input type="text" class="form-control" id="apellido" name = "apellido" 
+                <input type="text" class="form-control" id="apellido" name = "apellido" autocomplete="off"
                 value = "<?= set_value('apellido') ?>" pattern="[A-Za-z]{2,15}" required>
             </div>
 
             <div class="col-md-4">
                 <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" name = "correo" 
+                <input type="email" class="form-control" id="email" name = "correo"  autocomplete="off"
                 value = "<?= set_value('correo') ?>" >
             </div>
 
@@ -87,22 +87,5 @@
         </form><br>
 
         <label><h20>Nota:(Todos los campos son obligatorios, en roles debe seleccionar al menos uno)</h20></label>
-
-        <div id="liveAlertPlaceholder"></div>      
-
-        <?php
-            /* if(!$valido){
-                ?>
-            <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
-            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../static/imagenes/redes/exclamation-triangle.svg" ?>                
-                <div>
-                    <H6><b><?php echo $mensaje ?></H6></b>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div> 
-            <?php
-            }*/
-        ?>
     </div>
 </section> 

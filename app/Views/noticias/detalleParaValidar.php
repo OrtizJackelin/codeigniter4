@@ -1,5 +1,25 @@
-<?= session()->getFlashdata('error') ?>
-<?php $errors = validation_errors();
+
+<?php
+    $session = session();
+    $mensaje = session()->getFlashdata('mensaje'); 
+    $errors = validation_errors();
+    if($errors || $mensaje !== null){
+?>
+        <div id="liveAlertPlaceholder"></div>      
+
+        <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
+            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
+                <?php //include "../public/imagenes/redes/exclamation-triangle.svg" 
+                 base_url('/imagenes/redes/exclamation-triangle.svg')?>                
+                <div>
+                    <H6><b><?= validation_list_errors();  ?></H6></b>
+                    <H6><b><?= $mensaje;  ?></H6></b>
+                    
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div> 
+    <?php
+    }
 ?>
 
 <section class = "sectionPrincipal">
@@ -10,7 +30,7 @@
             <h2> <?php echo esc($tituloCuerpo)?></h2>
         </div><br><br>
 
-        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="/noticia/post_validar" enctype="multipart/form-data" >
+        <form class="row g-3 " name= "formulario" id="formulario" method="post" action="<?= base_url('noticia/post_validar')?>" enctype="multipart/form-data" >
             <?= csrf_field() ?>
 
             <div class="col-md-12">
@@ -36,14 +56,14 @@
 
                          
             <div class="col-md-12">
-                <label for="inputGroupFile02"><b><h5>Imagen:</h5></b></label> 
+                <label ><b><h5>Imagen:</h5></b></label> 
                 <div>  
                     <label id = "imagen" style = "text-align: center"><b><h8>
                         <div class = "container">
                             <img src="<?php if(isset($noticia['imagen']) && !empty($noticia['imagen'])){
-                                                echo "../../imagenesNoticia/".$noticia['imagen'];
-                                            } else {
-                                                echo "../../imagenesNoticia/"."imagen-no-disponible.jpeg";
+                                                echo base_url('/imagenesNoticia/' . $noticia['imagen']);
+                                            }else{
+                                                echo base_url('/imagenesNoticia/' . "imagen-no-disponible.jpeg");
                                             }
                                     ?>" 
                                 class="img-fluid" alt="..."  style="max-width: 624px; max-height: 368px;"></h8></b>
@@ -89,30 +109,15 @@
                 </div>
                 <div class="col-3">
                     <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
-                        onclick="window.location.href='<?php echo base_url('noticia/validar'); ?>'">
+                        onclick="window.location.href='<?php base_url('noticia/validar') ?>'">
                             CANCELAR
                     </button>
+                   
                 </div>
             </div>
 
         </form><br>
 
         <div id="liveAlertPlaceholder"></div>      
-
-        <?php
-             if($errors){
-                ?>
-            <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
-            style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
-                <div>
-                    <H6><b><?= validation_list_errors() ?></H6></b>
-                  
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div> 
-            <?php
-            }
-        ?>
     </div>
 </section> 

@@ -8,7 +8,8 @@
 
         <div class="alert alert-primary d-flex align-items-center alert-dismissible" role="alert" 
             style = "margin-top: 20px; margin-bottom: 5px;" type = "hidedeng">
-                <?php include "../public/imagenes/redes/exclamation-triangle.svg" ?>                
+                <?php //include "../public/imagenes/redes/exclamation-triangle.svg" 
+                 base_url('/imagenes/redes/exclamation-triangle.svg')?>                
                 <div>
                     <H6><b><?= validation_list_errors();  ?></H6></b>
                     <H6><b><?= $mensaje;  ?></H6></b>
@@ -26,7 +27,7 @@
     </div>
 
     <div class = "container" style=" margin-top: 40px;">
-        <form class="row g-5 p-5 " id="formulario" method="post" action="/usuario/validar" >
+        <form class="row g-5 p-5 " id="formulario" method="post" action="<?= base_url('usuario/validar')?>" >
         <?= csrf_field() ?>
 
             <div class="col-md-4 m-5">

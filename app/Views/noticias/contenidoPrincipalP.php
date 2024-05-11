@@ -35,6 +35,13 @@
                     <?php
                     
                 }
+            }else{
+                ?>
+                <div class = "container">
+                    <p><H4>¡No se encontrarón noticias!</h4></p>
+                </div>
+
+                <?php
             }    
             ?>
         </table>

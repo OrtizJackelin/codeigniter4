@@ -35,19 +35,11 @@ class Usuario extends BaseController
             'tituloCuerpo' => 'Crear Usuario'
         ];
 
+        $this->response->noCache();
         return view('plantillas/header',$data)
         .view('usuarios/crear', $data)
         .view('plantillas/footer');
     }
-
-  /*  public function verificar_opciones(string $str = null, string &$error = null): bool
-    {
-        if ($this->request->getPost('es_editor') == null && $this->request->getPost('es_validador') == null) {
-            $error = 'Debe seleccionar al menos una opción.';
-            return false;
-        }
-        return true;
-    }*/
 
 
     public function crear(){
@@ -116,8 +108,8 @@ class Usuario extends BaseController
         }
     
         $data = [
-            'tituloPagina' => 'Inicar Sesion',
-            'tituloCuerpo' => 'Inicar Sesion',
+            'tituloPagina' => 'Iniciar Sesion',
+            'tituloCuerpo' => 'Iniciar Sesion',
         ];
 
         return view('plantillas/header',$data)
@@ -149,7 +141,7 @@ class Usuario extends BaseController
         ]);
 
         if (! $validation->run($data)) {
-            return $this->iniciarSesion();
+            return redirect()->to('usuario/iniciar_sesion');
         }
         $datosValidados = $validation->getValidated();      
 
@@ -173,7 +165,7 @@ class Usuario extends BaseController
         } else {
             $mensaje =  "usuario/clave invalido";
             $this->session->setFlashdata('mensaje', $mensaje);     
-            return $this->iniciarSesion();
+            return redirect()->to('usuario/iniciar_sesion');
         }
         
     }
@@ -186,6 +178,4 @@ class Usuario extends BaseController
     }
 
 }
-
-
 ?>
