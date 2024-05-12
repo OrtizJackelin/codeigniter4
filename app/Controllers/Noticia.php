@@ -107,7 +107,7 @@ class Noticia extends BaseController
         $fechaHoyFormateda = $this->formatearFecha($this->fechaHoraActual);
 
         $data = [
-            'tituloCuerpo' => 'dNoticias',
+            'tituloCuerpo' => '',
             'tituloPagina' => 'Noticias',
             'titulos' => $noticiasTitulos,
             'subtitulos' => $noticiasSubtitulos,
@@ -136,6 +136,7 @@ class Noticia extends BaseController
         $data = [
             'noticia' => $this->modeloNoticia->obtenerNoticias($idNoticia),
             'tituloPagina' => 'Detalle Noticia',
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
         ];
         if(empty($data['noticia'])){
             throw new PageNotFoundException('No se encontro la noticia '.$idNoticia);
@@ -248,8 +249,13 @@ class Noticia extends BaseController
             $data['diferencia_categoria'] = $borradores[0]['categoria']!=$borradores[1]['categoria']? "Sí": "No";
             $data['diferencia_imagen'] = $borradores[0]['imagen']!=$borradores[1]['imagen']? "Sí": "No";
         }
+        $fechaHoyFormateda = $this->formatearFecha($this->fechaHoraActual);
+        $dato = [
+            'tituloPagina' => 'Borradores',
+            'fechaDeHoy' => $fechaHoyFormateda,
+        ];
 
-        return view('plantillas/header',['tituloPagina' => 'Prueba borradores'])
+        return view('plantillas/header',$dato)
         .view('borradores/getBorradores',$data)
         .view('plantillas/footer');
     }
@@ -375,11 +381,14 @@ class Noticia extends BaseController
                 $categoriaModelo = model(ModeloCategoria::class);
                 $categorias = $categoriaModelo -> findAll();
 
+                $fechaHoyFormateda = $this->formatearFecha($this->fechaHoraActual);
+             
                 $data = [
                     'tituloCuerpo' => 'Mis Noticias',
                     'tituloPagina' => 'Mis Noticias',
                     'cabecera' => $cabecera,
-                    'noticias' => $contenidoNoticias,        
+                    'noticias' => $contenidoNoticias,  
+                    'fechaDeHoy' => $fechaHoyFormateda,      
                 ];
 
                 // Cargar vista principal con la plantilla
@@ -403,7 +412,7 @@ class Noticia extends BaseController
             throw new PageNotFoundException('No se encontro la noticia '.$idNoticia);
         }
 
-        if($noticia['id_estado'] != 2){
+        if($noticia['id_estado'] != 2 && $noticia['id_estado'] != 10 ){
             $mensaje = "¡Operación no permitida!";
             $this->session->setFlashdata('mensaje', $mensaje);    
             return redirect()->to('noticia/mis_noticias');  
@@ -416,7 +425,9 @@ class Noticia extends BaseController
         $categorias = $categoriaModelo -> findAll();
         
       
-        return view('plantillas/header', ['tituloPagina' => 'Editar Noticia'])            
+        return view('plantillas/header', ['tituloPagina' => 'Editar Noticia',
+                                            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
+                                        ])            
         . view('noticias/editarNoticia', ['tituloCuerpo' => 'Editar Noticia', 
                                             'estados' => $estados, 
                                             'categorias' => $categorias,
@@ -536,7 +547,14 @@ class Noticia extends BaseController
         $categorias = $categoriaModelo -> findAll();
 
         $this->response->noCache();
-        return view('plantillas/header', ['tituloPagina' => 'Crear Noticia'])
+
+        $dato = [
+            'tituloPagina' => 'Crear Noticia',
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
+        ];
+
+
+        return view('plantillas/header', $dato)
             . view('noticias/nueva', ['tituloCuerpo' => 'Crear Noticia', 
                                         'estados' => $estados, 'categorias' => $categorias])
             . view('plantillas/footer');
@@ -702,7 +720,8 @@ class Noticia extends BaseController
             'tituloPagina' => 'Histrorial de operaciones',
             'cabecera' => $cabecera,
             'noticias' => $historial,    
-            'deshacer'   => $botonDeshacerUltimaOPeracion
+            'deshacer'   => $botonDeshacerUltimaOPeracion,
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
         ];
 
           //Cargar vista principal con la plantilla
@@ -789,8 +808,13 @@ class Noticia extends BaseController
 
         $categoriaModelo = model(ModeloCategoria::class);
         $categorias = $categoriaModelo -> findAll();
+
+        $dato = [
+            'tituloPagina' => 'Ver noticias para validar',
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
+        ];
       
-        return view('plantillas/header', ['tituloPagina' => 'Ver noticias para validar'])            
+        return view('plantillas/header', $dato)            
         . view('noticias/detalleParaValidar', ['tituloCuerpo' => 'Noticia para validar', 
                                             'estados' => $estados, 
                                             'categoria' => $categorias,
@@ -866,7 +890,8 @@ class Noticia extends BaseController
                 'tituloCuerpo' => 'Noticias',
                 'tituloPagina' => 'Noticias',
                 'cabecera' => $cabecera,
-                'noticias' => $contenidoNoticias,        
+                'noticias' => $contenidoNoticias,  
+                'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),      
             ];
 
             // Cargar vista principal con la plantilla

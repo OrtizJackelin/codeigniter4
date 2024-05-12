@@ -15,11 +15,12 @@
     <link rel="stylesheet" href="<?= base_url('estilos/bootstrap-icons.css')?>">
     <link href="<?= base_url('estilos/bootstrap.min.css')?>" rel="stylesheet"
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!--<script type="text/javascript" src="<?= base_url('js/validaciones.js')?>"></script>-->
   
     <title><?php echo esc($tituloPagina)?></title>
 </head>
-<body  >
+<body style=" color:#1f1f1f;  font-family: 'Roboto', sans-serif;display: flex; flex-direction:column; overflow:hidden; height:calc( 100vh - 0px); " >
     <header>
     <nav style="display:flex; align-items: center; justify-content:space-between; padding: 2px; margin:0px!important; background:white; " 
         class=" sticky-top border-bottom background "><!--le saque el overflow:hidden; en style-->
@@ -30,6 +31,12 @@
                     style=" max-height:60px; margin:5px; " width="auto"
                 class="d-inline-block align-text-top">
             </a>
+        </div>
+
+        <div class=" col-md-3 text-center" style=" display:flex; flex-direction:column; align-items:center;  ">    
+            <h6 style="color:#808080!important; font-size: 13px; margin-top:-10px!important;  "> 
+                <em> <?php echo esc($fechaDeHoy);  ?></em>
+            </h6>
         </div>
 
         <div class= "container ml-auto" style = "text-align: right;">
@@ -93,6 +100,8 @@
         
     </nav>
     </header>
+    <section style="flex: 1; overflow:auto; height:100%; " >
+
  
 
     

@@ -3,18 +3,27 @@ namespace App\Controllers;
 use App\Models\ModeloUsuario;
 use  App\Validators\MisRules;
 use CodeIgniter\Exceptions\PageNotFoundException;
+use CodeIgniter\I18n\Time;
 
 class Usuario extends BaseController
 {
     private $session;
     private $modeloUsuario;
+    private $fechaHoraActual;
+    
 
     public function __construct()
     {
         helper('form');
         $this->modeloUsuario = model(ModeloUsuario::class);
         $this->session = session();
+        $this->fechaHoraActual =Time::now();
         
+    }
+
+    public function formatearFecha($fecha){
+        $fechaFormateada = new \CodeIgniter\I18n\Time($fecha);
+        return  $fechaFormateada->toLocalizedString('dd MMMM yyyy  hh:mm:ss ');
     }
 
     /*public function verificarCorreo()
@@ -32,7 +41,8 @@ class Usuario extends BaseController
     
         $data = [
             'tituloPagina' => 'Crear Usuario',
-            'tituloCuerpo' => 'Crear Usuario'
+            'tituloCuerpo' => 'Crear Usuario',
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
         ];
 
         $this->response->noCache();
@@ -110,6 +120,8 @@ class Usuario extends BaseController
         $data = [
             'tituloPagina' => 'Iniciar Sesion',
             'tituloCuerpo' => 'Iniciar Sesion',
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),
+            
         ];
 
         return view('plantillas/header',$data)

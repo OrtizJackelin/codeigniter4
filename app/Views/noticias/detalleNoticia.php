@@ -6,56 +6,67 @@
 
     <article>
         <div class = "container" >
+            
             <div class = "row g-2">                       
-                <div class="col-md-12">
-                    <div style=" text-align: center;">
-                        <label id = "titulo" style = "text-align: center; margin-top: 40px"><b><h2>
-                            <?php if(isset($noticia['titulo'])) echo($noticia['titulo']); ?></h2></b>
-                        </label>                  
+                    <div class="col-md-12">
+                        <div style=" text-align: center;">
+                            <label id = "titulo" style = "text-align: center; margin-top: 40px"><b><h2>
+                                <?php if(isset($noticia['titulo'])) {?>
+                                    <h2 style="font-weight: 600; "> <?php echo $noticia['titulo']; ?></h2></b>
+                                <?php
+                                }
+                                ?>
+                                
+                            </label>                  
+                        </div>
+                    </div> 
+
+                    <div class="col-md-12">
+                        <div style=" text-align: center;">
+                            <label id = "categoria" style = "text-align: center">
+                                <?php if(isset($noticia['categoria']) && isset($noticia['fecha'])){
+                                    ?>                                    
+                                        <h6 style="color:#808080!important; font-size: 13px; margin-top:-10px!important;  "> 
+                                        <em> <?= esc($noticia['categoria'] . " ". $noticia['fecha'])?></em></h6>
+                                    <?php                                    
+                                    }
+                                ?>
+                            </label>                   
+                        </div>
                     </div>
                 </div> 
+            
+            <div style = "display:flex; flex-direction:column; max-width:1200px;">                  
 
-                <div class="col-md-12">
-                    <div style=" text-align: center;">
-                        <label id = "categoria" style = "text-align: center"><b><h6>
-                            <?php if(isset($noticia['categoria']) 
-                                    && isset($noticia['fecha'])) 
-                                        echo $noticia['categoria'] . " ". $noticia['fecha']; 
-                            ?></h6></b>
-                        </label>                   
-                    </div>
-                </div>
-            </div> 
-         
-            <div class = "row g-2">                     
-                <div class="col-md-7" >
-                    <div >
-                        <label id = "descripcion" ><h8>
-                            <?php if(isset($noticia['descripcion'])) echo($noticia['descripcion']); ?></h8></b>
-                        </label>                  
-                    </div>
-                </div> 
+                <?php if(isset($noticia['descripcion'])){
+                    $expresion_regular = '/\r\n|\r|\n/';
 
-                <div class="col-md-5">
-                    <div >
-                        <label id = "imagen" style = "text-align: center"><b><h8>
-                            <div class = "container">
+                    // Dividir el texto en párrafos usando la expresión regular
+                    $parrafos = preg_split($expresion_regular, $noticia['descripcion']);
+
+                    for($i=0; $i < count($parrafos); $i++){
+                        if($i == 3){
+                            ?>
+                            <div style = "display:flex; justify-content:center">
                                 <img src="<?php if(isset($noticia['imagen']) && $noticia['imagen']!= ""){
                                                     echo base_url('/imagenesNoticia/' . $noticia['imagen']);
                                                 }else{
                                                     echo base_url('/imagenesNoticia/' . "imagen-no-disponible.jpeg");
+
                                                 }
                                             ?>" 
                                     class="img-fluid" alt="..."  style="max-width: 524px; max-height: 368px;"></h8></b>
-                            </div>
-                        </label>                  
-                    </div>
-                </div>        
+                            </div>  
+                            <?php
+                        }
+                        echo "<p style=' font-size:20px; font-weight:lighter;  padding:5px;'>$parrafos[$i]</p>";
+                    }
+            
+                } //echo($noticia['descripcion']); ?>
+
             </div>
     </article>
     <?php
     } 
     ?>
 
-</body>
-</html>
