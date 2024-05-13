@@ -5,7 +5,7 @@
     ?>   
 
     <article>
-        <div class = "container" >
+        <div class = "container" style="display:flex;flex-direction:column;align-items:center;"  >
             
             <div class = "row g-2">                       
                     <div class="col-md-12">
@@ -36,7 +36,7 @@
                     </div>
                 </div> 
             
-            <div style = "display:flex; flex-direction:column; max-width:1200px;">                  
+            <div style = "display:flex; flex-direction:column; max-width:1000px;">                  
 
                 <?php if(isset($noticia['descripcion'])){
                     $expresion_regular = '/\r\n|\r|\n/';
@@ -47,7 +47,7 @@
                     for($i=0; $i < count($parrafos); $i++){
                         if($i == 3){
                             ?>
-                            <div style = "display:flex; justify-content:center">
+                            <div style = "display:flex; justify-content:center; ">
                                 <img src="<?php if(isset($noticia['imagen']) && $noticia['imagen']!= ""){
                                                     echo base_url('/imagenesNoticia/' . $noticia['imagen']);
                                                 }else{
@@ -55,7 +55,8 @@
 
                                                 }
                                             ?>" 
-                                    class="img-fluid" alt="..."  style="max-width: 524px; max-height: 368px;"></h8></b>
+                                    class="img-fluid" alt="..."  style="max-width: 90%; width:500px; max-height: 368px;">
+                                
                             </div>  
                             <?php
                         }

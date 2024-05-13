@@ -763,7 +763,8 @@ class Noticia extends BaseController
             'tituloCuerpo' => 'Validaciones',
             'tituloPagina' => 'Validaciones',
             'cabecera' => $cabecera,
-            'noticias' => $contenidoNoticias,        
+            'noticias' => $contenidoNoticias,  
+            'fechaDeHoy' => $this->formatearFecha($this->fechaHoraActual),      
         ];
 
         // Cargar vista principal con la plantilla

@@ -23,13 +23,13 @@
     ?>
 
 
-    <div  style="display: flex; flex:7; max-height:100%; flex-direction:column; overflow:auto;" >
+    <div class = "contenidoPrincipal" >
         <?php echo $contenidoPrincipal; ?>
     </div>
 
-    <div style=" padding:0px; flex:3; max-width:180px; overflow:hidden; " >
+    <div class = "contenidoSecundario" >
        
-            <?php echo $contenidoSecundario; ?>
-        </div>
+        <?php echo $contenidoSecundario; ?>
+    </div>
     
 </div>

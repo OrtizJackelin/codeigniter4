@@ -109,33 +109,30 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
-                <label ><b><h5>Imagen:</h5></b></label> 
-                <div>  
-                    <label id = "imagenVieja" style = "text-align: center"><b><h8>
-                        <div class = "container">
-                            <img src="<?php if(isset($noticia['imagen']) && !empty($noticia['imagen'])){
-                                                echo base_url('/imagenesNoticia/' . $noticia['imagen']);
-                                            }else{
-                                                echo base_url('/imagenesNoticia/' . "imagen-no-disponible.jpeg");
-                                            }
-                                    ?>" 
-                                class="img-fluid" alt="..."  style="max-width: 624px; max-height: 368px;"></h8></b>
-                        </div>
-                    </label>  
-                </div>                   
+            <div class="row justify-content-center  text-center">
+                <label ><b><h5>Imagen:</h5></b></label>                 
+                    <div class = "container justify-content-center text-center">
+                        <img src="<?php if(isset($noticia['imagen']) && !empty($noticia['imagen'])){
+                                            echo base_url('/imagenesNoticia/' . $noticia['imagen']);
+                                        }else{
+                                            echo base_url('/imagenesNoticia/' . "imagen-no-disponible.jpeg");
+                                        }
+                                ?>" 
+                            class="img-fluid" alt="..."  style="max-width: 624px; max-height: 368px;"></h8></b>
+                    </div>
+                </label>                                 
             </div> 
 
             <input type = "hidden" name = "id" value = "<?= set_value('id', $noticia['id']) ?>">
             <?php $es_activo_original = $noticia['es_activo']?>
             <input type = "hidden" name = "es_activo_original" value = "<?= set_value('es_activo_original', $es_activo_original) ?>">
 
-            <div class="row justify-content-center " style = "margin-top: 60px;">
-                <div class="col-3">
+            <div class="row justify-content-center  text-center" style = "margin-top: 60px;">
+                <div class="col-6">
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
                 </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                <div class="col-6">
+                    <button type="button" class="btn btn-secondary btn-block " id="cancelar" name="cancelar"
                         onclick="window.location.href='<?php echo base_url('noticia/mis_noticias'); ?>'">
                             CANCELAR
                     </button>

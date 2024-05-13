@@ -3,27 +3,30 @@
         <h4> <?php echo esc($tituloCuerpo)?></h4>
     </div>
 
-    <div class="row" style = "margin-bottom:20px">
-        <div class="col-md-6" style="margin-bottom:10px;" >
+    <div  style = " display:flex; width:100%; justify-content:space-between; margin-bottom:20px">
+        <div style="margin-bottom:10px;" >
             <a 
             <?php
                 if ($offSet > 0) {
                     echo "href=\"" . base_url("noticia/" . $idNoticia . "/borradores") . "?offset=" . $offSet-1 . "\"";
                 }
                 ?>
-                style="display: flex; justify-content: left; align-items: left;"> Ver más recientes 
+                
+                style="display: flex; justify-content: left; align-items: left; text-decoration:none">
+                    <i class="bi bi-arrow-left-square-fill" style="font-size: 1.3rem; color: cornflowerblue;"></i>
+                        &nbsp; Ver más recientes 
             </a>
         </div>
 
-        <div class="col-md-6" style=" margin-bottom:10px; display: flex; justify-content: rigth; align-items: rigth; text-align:right" >
+        <div style=" margin-bottom:10px; display: flex; justify-content: rigth; align-items: rigth; text-align:right" >
             <a <?php
                 if ($offSet < $total-2) {
                     echo "href=\"" . base_url("noticia/" . $idNoticia . "/borradores") . "?offset=" . $offSet+1 . "\"";
                 }
                 ?>
-                style="display: flex; justify-content: rigth; align-items: rigth !important; text-align:right"> 
+                style="display: flex; justify-content: flex-end;width:100%; align-items: rigth !important; text-align:right; text-decoration:none"> 
                 
-                     Ver más antigüos <i class="bi bi-arrow-left-square-fill"></i>
+                     Ver más antigüos&nbsp;<i class="bi bi-arrow-right-square-fill" style="font-size: 1.3rem; color: cornflowerblue;"></i>
             </a>
 
         </div>
@@ -41,7 +44,7 @@
     
 
     <div class="row no-margin">
-        <div class="col-md-6" style="align-items: rigth; display: flex; height:100%; flex-direction:column; overflow:auto;" >
+        <div class="col-md-6" style="align-items: rigth; display: flex; height:100%; flex-direction:column; overflow:auto; padding-right:0px " >
             <table> 
                 <tr>
                     <td>Fecha</td>
@@ -59,7 +62,7 @@
 
                 <tr>
                     <td><input readonly type="text" name="categoria1"  value="<?= esc($categoria1)?>" class="form-control" ></td>
-                    <td><?= esc($diferencia_categoria)?></td>
+                    <td style="padding-left:12px;"><?= esc($diferencia_categoria)?></td>
                 </tr>
 
                 <tr>
@@ -69,8 +72,8 @@
 
                 <tr>
                     
-                    <td><input readonly type="text" name="titulo1"  value="<?= esc($titulo1)?>" class="form-control" ></td>
-                    <td><?= esc($diferencia_titulo)?></td>
+                    <td><input readonly type="text" name="titulo1"  value="<?= esc($titulo1)?>" class="form-control"></td>
+                    <td    style="padding-left:12px;"><?= esc($diferencia_titulo)?></td>
                 </tr>
 
                 <tr>
@@ -84,7 +87,7 @@
                             <?= esc($descripcion1)?>             
                         </textarea>
                     </td>
-                    <td><?= esc($diferencia_descripcion)?></td>
+                    <td style="padding-left:12px;"><?= esc($diferencia_descripcion)?></td>
 
                 </tr>
 
@@ -95,14 +98,14 @@
 
                 <tr>        
                     <td><input readonly type="text" name="imagen1"  value="<?= esc($imagen1)?>" class="form-control" ></td>
-                    <td><?= esc($diferencia_imagen)?></td>
+                    <td style="padding-left:12px;"><?= esc($diferencia_imagen)?></td>
                 </tr>
             </table>
         </div>
 
 
-        <div class="col-md-6" style="align-items: left; display: flex; height:100%; flex-direction:column; overflow:auto;" >
-            <table>
+        <div class="col-md-6" class="borradorColumna2" >
+            <table style="width: 100%;" >
                 <tr>
                     <td>Fecha</td>
                 </tr>

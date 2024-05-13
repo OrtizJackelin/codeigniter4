@@ -22,29 +22,31 @@
 ?>
 
 <section class = "sectionPrincipal">
-    <div class=" col-md-12 text-center" style=" margin-top: 20px;">
+    <div class=" col-md-12 text-center" style=" margin-top: 60px;">
         <h4> <?php echo esc($tituloCuerpo)?></h4>
     </div>
+        <div  style="display: flex; justify-content:center; width:100%;" >
+            <form style="display:flex; width: 90%; flex-direction:column; max-width:900px;aling-items:center; margin-top: 60px;" id="formulario" method="post" action="<?= base_url('usuario/validar')?>" >
+            <?= csrf_field() ?>
 
-    <div class = "container" style=" margin-top: 40px;">
-        <form class="row g-5 p-5 " id="formulario" method="post" action="<?= base_url('usuario/validar')?>" >
-        <?= csrf_field() ?>
+                <div style="display: flex; width:100%; justify-content:space-between; flex-wrap:wrap; width:100%; " >
+                    <div style = "min-width:220px; margin:3px 10px; max-width:350px; flex:1; " >
+                        <label for="email" class="form-label"><b>Email</b></label>
+                        <input type="email" class="form-control" id="email" name = "correo" value = "" required>
+                    </div>
 
-            <div class="col-md-4 m-5">
-                <label for="email" class="form-label"><b>Email</b></label>
-                <input type="email" class="form-control" id="email" name = "correo" value = "" required>
-            </div>
+                    <div  style = " min-width:220px; margin:3px 10px; max-width:350px;flex:1; " >
+                        <label for="clave" class="form-label"><b>Password</b></label>
+                        <input type="password" id="clave" name="clave"  class="form-control" 
+                            pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$"required>
+                    </div>  
+                </div>       
 
-            <div class="col-md-4 m-5">
-                <label for="clave" class="form-label"><b>Password</b></label>
-                <input type="password" id="clave" name="clave"  class="form-control" 
-                    pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$"required>
-            </div>         
+                <div class="col-12" style="margin-top:40px;" >
+                    <button type="submit" class="btn btn-success" id="enviar" name = "enviar" style = "width: 100px">Iniciar</button>
+                </div>
 
-            <div class="col-12 m-5">
-                <button type="submit" class="btn btn-success" id="enviar" name = "enviar" style = "width: 100px">Iniciar</button>
-            </div>
-
-        </form>
+            </form>
+       
     </div>
 </section>

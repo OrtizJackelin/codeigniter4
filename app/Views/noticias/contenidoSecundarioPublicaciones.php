@@ -1,32 +1,44 @@
           
 
-    <p style=" background: #FCFCFC80; margin:0px; padding: 10px;
-        background: radial-gradient(at left top, #ffffff14, #8e7f9826); text-align: center;"><b>Categorías</b></p>
+    <div class="categoriasEscritorio" >
+        <p style=" margin:0px; padding: 10px; text-align: center;"><b>Categorías</b></p>
 
-    <div class = "table-responsive"  style="display: flex;  height:100%; flex-direction:column; overflow:auto;"    >
-        <table class="table table-light  table-hover"  id = "listadoCategorias" name = "listadoCategorias">
+        <div   id="listaCategoriasEscritorio"   >
             <?php
-            if (!empty($todasLasCategorias)){
-                /*echo "<tr>
-                        <td style="text-align: left;"><?php if(isset($todasLasCategorias)) echo($todasLasCategorias);?></td>
-                    </tr>";*/
-                echo "<tr>
-                        <td style=\"text-align: left; text-align:right; \">" . (isset($todasLasCategorias) ? $todasLasCategorias : '') . "</td>
-                    </tr>";
-            }
+                if (!empty($todasLasCategorias)){
+                    echo (isset($todasLasCategorias) ? $todasLasCategorias : '');
+                }
 
-            if (!empty($listadoCategorias) && is_array($listadoCategorias)){
+                if (!empty($listadoCategorias) && is_array($listadoCategorias)){
 
-                foreach($listadoCategorias as $items){    
-                    echo "<tr>";   
-                ?>
-                    <td style="text-align: left;text-align:right;"><?php if(isset($items)) echo($items);?></td>
-                <?php
-                    echo "</tr>  ";                   
-                } 
-            }
+                    foreach($listadoCategorias as $items){    
+                       if(isset($items)) echo($items);
+                    } 
+                }
             ?>
-        </table>
-    </div>   
+        </div> 
+    </div>  
 
+    <div class="categoriasMobile" >
+                <div class="categoriaShowControl" >
+                <p ><b>Categorías</b></p>
+                     <span class="toggleList" data-bs-toggle="collapse" data-bs-target="#listaCategoriasMobile" aria-expanded="false" aria-controls="listaCategoriasMobile">
+                        <i class="bi bi-arrow-down-square-fill" style="font-size: 1.3rem; color: cornflowerblue;" ></i>
+                    </span>
+                </div>
+                
+        <div   id="listaCategoriasMobile" class="collapse listaCategoriasMobile" >
+            <?php
+                if (!empty($todasLasCategorias)){
+                    echo (isset($todasLasCategorias) ? $todasLasCategorias : '');
+                }
 
+                if (!empty($listadoCategorias) && is_array($listadoCategorias)){
+
+                    foreach($listadoCategorias as $items){    
+                       if(isset($items)) echo($items);
+                    } 
+                }
+        ?>
+        </div> 
+    </div>  

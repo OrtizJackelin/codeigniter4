@@ -105,12 +105,12 @@
             </div>
 
             
-            <div class="row justify-content-center " style = "margin-top: 60px;">
-                <div class="col-3">
+            <div class="row justify-content-center text-center " style = "margin-top: 60px;">
+                <div class="col-6">
                     <button type="submit" class="btn btn-secondary btn-block" id="enviar" name="enviar">GUARDAR</button>
                 </div>
-                <div class="col-3">
-                    <button type="button" class="btn btn-secondary btn-block mt-2" id="cancelar" name="cancelar"
+                <div class="col-6">
+                    <button type="button" class="btn btn-secondary btn-block " id="cancelar" name="cancelar"
                         onclick="window.location.href='<?php echo base_url('noticia'); ?>'">
                             CANCELAR
                     </button>
