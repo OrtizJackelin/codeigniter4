@@ -67,7 +67,9 @@
 
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-end">
                         <?php
-                        if ($session->has('id')) { 
+                        if ($session->has('id')) { ?>
+                            <li><a class="dropdown-item" href="<?= base_url('noticia')?>">Noticias Publicadas</a></li>
+                            <?php
                             if($session->has('esEditor') && $session->esEditor ==1){//editor
                             ?>
                                 <li><a class="dropdown-item" href="<?= base_url('noticia/mis_noticias')?>">Mis noticias</a></li>

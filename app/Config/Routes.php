@@ -23,6 +23,7 @@ $routes->get('noticia/historial/(:segment)', [Noticia::class, 'detalleDeOPeracio
 $routes->get('noticia/(:segment)/deshacer_operacion/', [Noticia::class, 'deshacerUltimaOperacion']);
 $routes->get('noticia/editar_noticia/(:segment)', [Noticia::class, 'editar']);
 $routes->get('noticia/validar_noticia/(:segment)', [Noticia::class, 'detalleNoticiaParaValidar']);
+$routes->get('noticia/actualizar_estado_noticia', [Noticia::class, 'actualizarEstadoNoticias']);
 $routes->get('noticia/(:segment)', [Noticia::class, 'detalleNoticia']); // segment ->cuando no se el valor que llega en ese segmento no es conocido
 $routes->get('usuario/nueva', [Usuario::class, 'nueva']);
 $routes->post('usuario', [Usuario::class, 'crear']);
@@ -30,3 +31,4 @@ $routes->get('usuario/iniciar_sesion', [Usuario::class, 'iniciarSesion']);
 $routes->post('usuario/validar', [Usuario::class, 'validarSesion']);
 $routes->get('usuario/cerrar_sesion', [Usuario::class, 'cerrarSesion']);
 $routes->get('noticia/(:segment)/borradores', [Noticia::class, 'getBorradores']);
+

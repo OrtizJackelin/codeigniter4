@@ -62,7 +62,13 @@
 
                 <tr>
                     <td><input readonly type="text" name="categoria1"  value="<?= esc($categoria1)?>" class="form-control" ></td>
-                    <td style="padding-left:12px;"><?= esc($diferencia_categoria)?></td>
+                    <td style="padding-left:12px;">
+                        <?php if($diferencia_categoria){?>
+                            <i class="bi bi-arrow-left-square-fill" style="font-size: 1.3rem; color: red;"></i>
+                        <?php
+                        }
+                        ?>
+                    </td>
                 </tr>
 
                 <tr>
@@ -73,7 +79,13 @@
                 <tr>
                     
                     <td><input readonly type="text" name="titulo1"  value="<?= esc($titulo1)?>" class="form-control"></td>
-                    <td    style="padding-left:12px;"><?= esc($diferencia_titulo)?></td>
+                    <td    style="padding-left:12px;">
+                        <?php if($diferencia_titulo){?>
+                            <i class="bi bi-arrow-left-square-fill" style="font-size: 1.3rem; color: red;"></i>
+                        <?php
+                        }
+                        ?>
+                    </td>
                 </tr>
 
                 <tr>
@@ -87,7 +99,13 @@
                             <?= esc($descripcion1)?>             
                         </textarea>
                     </td>
-                    <td style="padding-left:12px;"><?= esc($diferencia_descripcion)?></td>
+                    <td style="padding-left:12px;">
+                        <?php if($diferencia_descripcion){?>
+                            <i class="bi bi-arrow-left-square-fill" style="font-size: 1.3rem; color: red;"></i>
+                        <?php
+                        }
+                        ?>
+                    </td>
 
                 </tr>
 
@@ -98,7 +116,13 @@
 
                 <tr>        
                     <td><input readonly type="text" name="imagen1"  value="<?= esc($imagen1)?>" class="form-control" ></td>
-                    <td style="padding-left:12px;"><?= esc($diferencia_imagen)?></td>
+                    <td style="padding-left:12px;">
+                        <?php if($diferencia_imagen){?>
+                            <i class="bi bi-arrow-left-square-fill" style="font-size: 1.3rem; color: red;"></i>
+                        <?php
+                        }
+                        ?>
+                    </td>
                 </tr>
             </table>
         </div>
@@ -152,6 +176,8 @@
                     <td><input readonly type="text" name="imagen2"  value="<?= esc($imagen2)?>" class="form-control" ></td>
                 </tr>
             </table>
+            
         </div>
+        <label><br><h20><b>Nota: Los cambios entre borradores son mostrados con la flecha roja </b></h20></label>
     </div>
 </div>

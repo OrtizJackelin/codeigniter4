@@ -33,14 +33,14 @@
             <?= csrf_field() ?>
 
             <div class="col-md-12">
-                <label for="titulo"><b><h5>Título:</h5></b></label>
+                <label><b><h5>Título:</h5></b></label>
                 <input type="text" name="titulo" autocomplete="off"
                     value="<?= set_value('titulo') ?>" class="form-control" required>
             </div>
 
             <div class="col-md-4">
-                <label for="categoria"><b><h5>Categoría:</h5></b></label>
-                <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" 
+                <label><b><h5>Categoría:</h5></b></label>
+                <select class="form-select" aria-label="Default select example" 
                     name = "categoria" required>
                 <option value="" <?= set_select('categoria', '') ?>>
                     Seleccione
@@ -62,7 +62,7 @@
             </div>
 
             <div class="col-md-12">
-                <label for="descripcion"><b><h5>Descripción:</h5></b></label>
+                <label><b><h5>Descripción:</h5></b></label>
                 <textarea name="descripcion" cols="45" rows="10" class="form-control" autocomplete="off">
                 <?= set_value('descripcion') ?>             
                 </textarea required>
@@ -75,7 +75,7 @@
             </div>
 
             <div class="col-md-4">
-                <label for="estado"><b><h5>Guardar como:</h5></b></label>
+                <label for="inputGroupSelect01"><b><h5>Guardar como:</h5></b></label>
                 <select class="form-select" aria-label="Default select example" id="inputGroupSelect01" name = "estado" required>
                     <option value="" <?= set_select('estado', '') ?>>
                         Seleccione

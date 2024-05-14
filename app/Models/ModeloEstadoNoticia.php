@@ -9,10 +9,11 @@
         protected $allowedFields = ['id_usuario','id_noticia','id_estado','observaciones'];
 
         
-        public function publicarAutomticamente(){
+        public function publicarYFinalizarNoticiasAutomticamente(){
 
             $dias = config('MiConfiguracion')->dias;
-           // var_dump($dias);
+
+            d("Ejecutando actualización automática de noticias...");
 
             $subconsulta = '(SELECT MAX(fecha) 
                             FROM estado_noticia 
@@ -31,7 +32,9 @@
             ->groupBy('noticia.id')
             ->select('noticia.id')
             ->get()->getResultArray();
-            
+
+            d("Publicando automaticamente " . count($noticias) . " noticias.");
+
             foreach($noticias as $noticia){
                 $this->save([
                     'id_noticia'=> $noticia['id'],
@@ -51,11 +54,13 @@
             ->select('noticia.id, fecha')
             ->get()->getResultArray();
 
+            d("Finalizando automaticamente " . count($noticias) . " noticias.");
+
             foreach($noticias as $noticia){
                 $this->save([
                     'id_noticia'=> $noticia['id'],
                     'id_estado'=> 7,
-                    'observaciones'=> 'PFinalizada automáticamente por sistema',
+                    'observaciones'=> 'Finalizada automáticamente por sistema',
                     'id_usuario'=> 1,            
                 ]);
             }

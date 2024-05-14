@@ -26,10 +26,14 @@ class Noticia extends BaseController
         $this->session = session();
         $this->modeloNoticia = model(ModeloNoticia::class);
         $this->fechaHoraActual =Time::now();
-        $modeloEstadoNoticia = model(ModeloEstadoNoticia::class);
-        $modeloEstadoNoticia->publicarAutomticamente();
+       
         $this->modeloBorrador = model(ModeloBorrador::class);
        
+    }
+
+    public function actualizarEstadoNoticias(){
+        $modeloEstadoNoticia = model(ModeloEstadoNoticia::class);
+        $modeloEstadoNoticia->publicarYFinalizarNoticiasAutomticamente();
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +111,6 @@ class Noticia extends BaseController
         $fechaHoyFormateda = $this->formatearFecha($this->fechaHoraActual);
 
         $data = [
-            'tituloCuerpo' => '',
             'tituloPagina' => 'Noticias',
             'titulos' => $noticiasTitulos,
             'subtitulos' => $noticiasSubtitulos,
@@ -150,19 +153,19 @@ class Noticia extends BaseController
     private function esActivo($es_activo){
         if(isset($es_activo)){
             if($es_activo == 1 ){
-                return 'Activo';
+                return '<p style= "color: green">Activo</p>';
             }else{
-                return 'Inactivo';
+                return '<p style="text-decoration: line-through; color: red">Inactivo</p>';
             } 
         } else{
             return 'No disponible';
         }
     }
 
-    private function enlaceEditar($estado, $id){
+    private function enlaceEditar($estado, $id, $esActivo){
 
         if(isset($estado)){
-            if($estado === 'Borrador'  || $estado === 'Corregir'){
+            if(($estado === 'Borrador' && $esActivo == 1)  || $estado === 'Corregir'){
                 return '<a href="' . base_url('/noticia/editar_noticia/' . esc($id, 'url')) . '" 
                             style="display: flex; justify-content: center; align-items: center;">
                             Editar 
@@ -199,7 +202,7 @@ class Noticia extends BaseController
         }
     }
 
-  
+
     public function getBorradores($idNoticia = 0, $offSet=0) {
 
         $noticia = $this->modeloNoticia->find($idNoticia);
@@ -224,7 +227,7 @@ class Noticia extends BaseController
         $data['categoria1'] = $borradores[0]['categoria'];
         $data['imagen1'] = $borradores[0]['imagen'];
 
-        $data['modificaciones'] = null;
+        //$data['modificaciones'] = null;
         $data['numero2'] = null;
         $data['fecha2'] = null;
         $data['titulo2'] = null;
@@ -237,28 +240,31 @@ class Noticia extends BaseController
         $data['diferencia_imagen'] = null;
 
         if (array_key_exists(1, $borradores)) {
-            $data['modificaciones'] = "Modificaciones";
+           // $data['modificaciones'] = "Modificaciones";
             $data['numero2'] = "Borrador " . $total - $offSet - 1 . " de " . $total;;
             $data['fecha2'] = $borradores[1]['fecha_modificacion'];
             $data['titulo2'] = $borradores[1]['titulo'];
             $data['descripcion2'] = $borradores[1]['descripcion'];
             $data['categoria2'] = $borradores[1]['categoria'];
             $data['imagen2'] = $borradores[1]['imagen'];
-            $data['diferencia_titulo'] = $borradores[0]['titulo']!=$borradores[1]['titulo']? "Sí": "No";
-            $data['diferencia_descripcion'] = $borradores[0]['descripcion']!=$borradores[1]['descripcion']? "Sí": "No";
-            $data['diferencia_categoria'] = $borradores[0]['categoria']!=$borradores[1]['categoria']? "Sí": "No";
-            $data['diferencia_imagen'] = $borradores[0]['imagen']!=$borradores[1]['imagen']? "Sí": "No";
+            $data['diferencia_titulo'] = $borradores[0]['titulo']!=$borradores[1]['titulo']? "1": "0";
+            $data['diferencia_descripcion'] = $borradores[0]['descripcion']!=$borradores[1]['descripcion']? "1": "0";
+            $data['diferencia_categoria'] = $borradores[0]['categoria']!=$borradores[1]['categoria']? "1": "0";
+            $data['diferencia_imagen'] = $borradores[0]['imagen']!=$borradores[1]['imagen']? "1": "0";
+
         }
+        
         $fechaHoyFormateda = $this->formatearFecha($this->fechaHoraActual);
         $dato = [
             'tituloPagina' => 'Borradores',
             'fechaDeHoy' => $fechaHoyFormateda,
         ];
-
+        
         return view('plantillas/header',$dato)
         .view('borradores/getBorradores',$data)
         .view('plantillas/footer');
     }
+
 
 
     private function verHistorialDeOperacionesNoticia($id){
@@ -354,7 +360,7 @@ class Noticia extends BaseController
                 $noticias = $this->modeloNoticia->obtenerNoticiasUsuario($this->session->id);
          
                 //mapeamos para el contenido de la tabla
-                $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Estatus', 'Fecha/estatus', 'Responsable/estatus', 
+                $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estatus', 'Estado', 'Fecha/estatus', 'Responsable/estatus', 
                             'Editar','Borradores','Historial', 'Acci&oacute;n'];
 
                 
@@ -367,7 +373,7 @@ class Noticia extends BaseController
                     $estatus = isset($item['estado']) ? esc($item['estado']) : 'No disponible';
                     $fecha = isset($item['fechaEstatus']) ? esc($item['fechaEstatus']) : 'No disponible';
                     $responsable = isset($item['correo']) ? esc($item['correo']) : 'No disponible';                    
-                    $editarNoticia = $this->enlaceEditar($item['estado'], $item['id']);
+                    $editarNoticia = $this->enlaceEditar($item['estado'], $item['id'], $item['es_activo']);
                     $verBorradores = $this->verBorradores($item['id']);     
                     $verHistorial = $this->verHistorialDeOperacionesNoticia($item['id']);
                     $accion = $this->botonActivar($item['estado'],$item['es_activo'],$item['id']);            
@@ -412,7 +418,7 @@ class Noticia extends BaseController
             throw new PageNotFoundException('No se encontro la noticia '.$idNoticia);
         }
 
-        if($noticia['id_estado'] != 2 && $noticia['id_estado'] != 10 ){
+        if($noticia['id_estado'] != 2 && $noticia['id_estado'] != 10 ){  // no se pueden editar noticias que no cumplan la condición
             $mensaje = "¡Operación no permitida!";
             $this->session->setFlashdata('mensaje', $mensaje);    
             return redirect()->to('noticia/mis_noticias');  
@@ -866,7 +872,7 @@ class Noticia extends BaseController
             $noticias = $this->modeloNoticia->obtenerTodasLasNoticias();
         
             //mapeamos para el contenido de la tabla
-            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a', 'Estado', 'Es_Activo', 'Fecha/estatus', 'Editor', 
+            $cabecera = ['T&iacute;tulo', 'Categor&iacute;a','Estado','Estatus', 'Fecha/estatus', 'Editor', 
                         'Ver/detalle'];
             
             $contenidoNoticias = array_map(function($item) {

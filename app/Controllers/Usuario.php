@@ -26,16 +26,6 @@ class Usuario extends BaseController
         return  $fechaFormateada->toLocalizedString('dd MMMM yyyy  hh:mm:ss ');
     }
 
-    /*public function verificarCorreo()
-    {
-        $request = $this->request->getJSON();
-        $email = $request->email;
-
-        // Lógica para verificar si el correo electrónico ya está registrado en la base de datos
-        $existeEmail = $this->tuModelo->verificarEmailExistente($email);
-
-        return $this->response->setJSON(['exists' => $existeEmail]);
-    }*/
     public function nueva(){
 
     
